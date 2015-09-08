@@ -6,5 +6,9 @@
     <string name="button_text">OCR!</string>
     <string name="text_hint">OCRed Text will appear here</string>
     <string name="button_from_gallery">Gallery</string>
+    <string name="title_activity_login">Login</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
