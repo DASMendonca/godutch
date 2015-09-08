@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -25,216 +26,278 @@ import android.widget.EditText;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 public class GoDutch extends Activity {
-	public static final String PACKAGE_NAME = "psoc.com.godutch";
-	public static final String DATA_PATH = Environment
-			.getExternalStorageDirectory().toString() + "/GoDutch/";
-	
-	// You should have the trained data file in assets folder
-	// You can get them at:
-	// http://code.google.com/p/tesseract-ocr/downloads/list
-	public static final String lang = "por";
 
-	private static final String TAG = "GoDutch.java";
+    private static int CAMERA_REQUEST_CODE = 0;
+    private static int GALLERY_REQUEST_CODE = 1;
 
-	protected Button _button;
-	// protected ImageView _image;
-	protected EditText _field;
-	protected String _path;
-	protected boolean _taken;
 
-	protected static final String PHOTO_TAKEN = "photo_taken";
+    public static final String PACKAGE_NAME = "psoc.com.godutch";
+    public static final String DATA_PATH = Environment
+            .getExternalStorageDirectory().toString() + "/GoDutch/";
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    // You should have the trained data file in assets folder
+    // You can get them at:
+    // http://code.google.com/p/tesseract-ocr/downloads/list
+    public static final String lang = "por";
 
-		String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
+    private static final String TAG = "GoDutch.java";
 
-		for (String path : paths) {
-			File dir = new File(path);
-			if (!dir.exists()) {
-				if (!dir.mkdirs()) {
-					Log.v(TAG, "ERROR: Creation of directory " + path + " on sdcard failed");
-					return;
-				} else {
-					Log.v(TAG, "Created directory " + path + " on sdcard");
-				}
-			}
+    protected Button _button;
+    // protected ImageView _image;
+    protected EditText _field;
+    protected String _path;
+    protected boolean _taken;
 
-		}
-		
-		// lang.traineddata file with the app (in assets folder)
-		// You can get them at:
-		// http://code.google.com/p/tesseract-ocr/downloads/list
-		// This area needs work and optimization
-		if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
-			try {
+    protected static final String PHOTO_TAKEN = "photo_taken";
 
-				AssetManager assetManager = getAssets();
-				InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
-				//GZIPInputStream gin = new GZIPInputStream(in);
-				OutputStream out = new FileOutputStream(DATA_PATH
-						+ "tessdata/" + lang + ".traineddata");
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-				// Transfer bytes from in to out
-				byte[] buf = new byte[1024];
-				int len;
-				//while ((lenf = gin.read(buff)) > 0) {
-				while ((len = in.read(buf)) > 0) {
-					out.write(buf, 0, len);
-				}
-				in.close();
-				//gin.close();
-				out.close();
-				
-				Log.v(TAG, "Copied " + lang + " traineddata");
-			} catch (IOException e) {
-				Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
-			}
-		}
+        String[] paths = new String[]{DATA_PATH, DATA_PATH + "tessdata/"};
 
-		super.onCreate(savedInstanceState);
+        for (String path : paths) {
+            File dir = new File(path);
+            if (!dir.exists()) {
+                if (!dir.mkdirs()) {
+                    Log.v(TAG, "ERROR: Creation of directory " + path + " on sdcard failed");
+                    return;
+                } else {
+                    Log.v(TAG, "Created directory " + path + " on sdcard");
+                }
+            }
 
-		setContentView(R.layout.main);
+        }
 
-		// _image = (ImageView) findViewById(R.id.image);
-		_field = (EditText) findViewById(R.id.field);
-		_button = (Button) findViewById(R.id.button);
-		_button.setOnClickListener(new ButtonClickHandler());
+        // lang.traineddata file with the app (in assets folder)
+        // You can get them at:
+        // http://code.google.com/p/tesseract-ocr/downloads/list
+        // This area needs work and optimization
+        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
+            try {
 
-		_path = DATA_PATH + "/ocr.jpg";
-	}
+                AssetManager assetManager = getAssets();
+                InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
+                //GZIPInputStream gin = new GZIPInputStream(in);
+                OutputStream out = new FileOutputStream(DATA_PATH
+                        + "tessdata/" + lang + ".traineddata");
 
-	public class ButtonClickHandler implements View.OnClickListener {
-		public void onClick(View view) {
-			Log.v(TAG, "Starting Camera app");
-			startCameraActivity();
-		}
-	}
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                //while ((lenf = gin.read(buff)) > 0) {
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                //gin.close();
+                out.close();
 
-	// Simple android photo capture:
-	// http://labs.makemachine.net/2010/03/simple-android-photo-capture/
+                Log.v(TAG, "Copied " + lang + " traineddata");
+            } catch (IOException e) {
+                Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
+            }
+        }
 
-	protected void startCameraActivity() {
-		File file = new File(_path);
-		Uri outputFileUri = Uri.fromFile(file);
+        super.onCreate(savedInstanceState);
 
-		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        setContentView(R.layout.main);
 
-		startActivityForResult(intent, 0);
-	}
+        // _image = (ImageView) findViewById(R.id.image);
+        _field = (EditText) findViewById(R.id.field);
+        _button = (Button) findViewById(R.id.OCRbutton);
+        _button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Log.v(TAG, "Starting Camera app");
+                startCameraActivity();
+            }
+        });
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        _button = (Button) findViewById(R.id.ocrFromGallery);
+        _button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startOCRFromGallery();
+            }
+        });
 
-		Log.i(TAG, "resultCode: " + resultCode);
+        _button = (Button) findViewById(R.id.test_image);
+        _button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
+                onPhotoTaken(bitmap);
+            }
+        });
 
-		if (resultCode == -1) {
-			onPhotoTaken();
-		} else {
-			Log.v(TAG, "User cancelled");
-		}
-	}
+        _path = DATA_PATH + "/ocr.jpg";
+    }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean(GoDutch.PHOTO_TAKEN, _taken);
-	}
+    private void startOCRFromGallery() {
+        final Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+    }
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		Log.i(TAG, "onRestoreInstanceState()");
-		if (savedInstanceState.getBoolean(GoDutch.PHOTO_TAKEN)) {
-			onPhotoTaken();
-		}
-	}
+    // Simple android photo capture:
+    // http://labs.makemachine.net/2010/03/simple-android-photo-capture/
 
-	protected void onPhotoTaken() {
-		_taken = true;
+    protected void startCameraActivity() {
+        File file = new File(_path);
+        Uri outputFileUri = Uri.fromFile(file);
 
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inSampleSize = 4;
+        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
 
-		Bitmap bitmap = BitmapFactory.decodeFile(_path, options);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		try {
-			ExifInterface exif = new ExifInterface(_path);
-			int exifOrientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
+        Log.i(TAG, "resultCode: " + resultCode);
 
-			Log.v(TAG, "Orient: " + exifOrientation);
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
+                case -1: //why -1?
+                    onPhotoTaken();
+                    break;
+                case 1:
+                    if (data != null)
+                        onPhotoSelected(data.getData());
+                    break;
+                default:
+                    Log.v(TAG, "User cancelled");
+            }
+    }
 
-			int rotate = 0;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(GoDutch.PHOTO_TAKEN, _taken);
+    }
 
-			switch (exifOrientation) {
-			case ExifInterface.ORIENTATION_ROTATE_90:
-				rotate = 90;
-				break;
-			case ExifInterface.ORIENTATION_ROTATE_180:
-				rotate = 180;
-				break;
-			case ExifInterface.ORIENTATION_ROTATE_270:
-				rotate = 270;
-				break;
-			}
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.i(TAG, "onRestoreInstanceState()");
+        if (savedInstanceState.getBoolean(GoDutch.PHOTO_TAKEN)) {
+            onPhotoTaken();
+        }
+    }
 
-			Log.v(TAG, "Rotation: " + rotate);
+    protected void onPhotoSelected(Uri uri) {
+        Uri selectedImage = uri;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-			if (rotate != 0) {
+        Cursor cursor = getContentResolver().query(selectedImage,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
 
-				// Getting width & height of the given image.
-				int w = bitmap.getWidth();
-				int h = bitmap.getHeight();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
 
-				// Setting pre rotate
-				Matrix mtx = new Matrix();
-				mtx.preRotate(rotate);
+        Bitmap bill = BitmapFactory.decodeFile(picturePath);
 
-				// Rotating Bitmap
-				bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
-			}
+        onPhotoTaken(bill);
 
-			// Convert to ARGB_8888, required by tess
-			bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+    }
 
-		} catch (IOException e) {
-			Log.e(TAG, "Couldn't correct orientation: " + e.toString());
-		}
 
-		// _image.setImageBitmap( bitmap );
-		
-		Log.v(TAG, "Before baseApi");
+    protected void onPhotoTaken(Bitmap bitmap) {
+        _taken = true;
 
-		TessBaseAPI baseApi = new TessBaseAPI();
-		baseApi.setDebug(true);
-		baseApi.init(DATA_PATH, lang);
-		baseApi.setImage(bitmap);
-		
-		String recognizedText = baseApi.getUTF8Text();
-		
-		baseApi.end();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
 
-		// You now have the text in recognizedText var, you can do anything with it.
-		// We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
-		// so that garbage doesn't make it to the display.
+        Log.v(TAG, "Before baseApi");
 
-		Log.v(TAG, "OCRED TEXT: " + recognizedText);
+        TessBaseAPI baseApi = new TessBaseAPI();
+        baseApi.setDebug(true);
+        baseApi.init(DATA_PATH, lang);
+        baseApi.setImage(bitmap);
 
-		if ( lang.equalsIgnoreCase("eng") ) {
-			recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
-		}
-		
-		recognizedText = recognizedText.trim();
+        String recognizedText = baseApi.getUTF8Text();
 
-		if ( recognizedText.length() != 0 ) {
-			_field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
-			_field.setSelection(_field.getText().toString().length());
-		}
-		
-		// Cycle done.
-	}
-	
-	// www.Gaut.am was here
-	// Thanks for reading!
+        baseApi.end();
+
+        // You now have the text in recognizedText var, you can do anything with it.
+        // We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
+        // so that garbage doesn't make it to the display.
+
+        Log.v(TAG, "OCRED TEXT: " + recognizedText);
+
+        if (lang.equalsIgnoreCase("eng")) {
+            recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
+        }
+
+        recognizedText = recognizedText.trim();
+
+        if (recognizedText.length() != 0) {
+            _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
+            _field.setSelection(_field.getText().toString().length());
+        }
+
+        // Cycle done.
+    }
+
+    protected void onPhotoTaken() {
+        _taken = true;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(_path, options);
+
+        try {
+            ExifInterface exif = new ExifInterface(_path);
+            int exifOrientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            Log.v(TAG, "Orient: " + exifOrientation);
+
+            int rotate = 0;
+
+            switch (exifOrientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+            }
+
+            Log.v(TAG, "Rotation: " + rotate);
+
+            if (rotate != 0) {
+
+                // Getting width & height of the given image.
+                int w = bitmap.getWidth();
+                int h = bitmap.getHeight();
+
+                // Setting pre rotate
+                Matrix mtx = new Matrix();
+                mtx.preRotate(rotate);
+
+                // Rotating Bitmap
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+            }
+
+            // Convert to ARGB_8888, required by tess
+            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        } catch (IOException e) {
+            Log.e(TAG, "Couldn't correct orientation: " + e.toString());
+        }
+
+        // _image.setImageBitmap( bitmap );
+
+        onPhotoTaken(bitmap);
+
+    }
+
+    // www.Gaut.am was here
+    // Thanks for reading!
 }
