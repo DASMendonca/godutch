@@ -8,13 +8,10 @@ import java.io.OutputStream;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -135,6 +132,15 @@ public class GoDutch extends Activity {
             }
         });
 
+        _button = (Button) findViewById(R.id.go_to_home);
+        _button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Home.class);
+                startActivity(intent);
+            }
+        });
+
         _path = DATA_PATH + "/ocr.jpg";
     }
 
@@ -147,6 +153,7 @@ public class GoDutch extends Activity {
 
     // Simple android photo capture:
     // http://labs.makemachine.net/2010/03/simple-android-photo-capture/
+
 
 
     @Override
