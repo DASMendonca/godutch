@@ -20,14 +20,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 public class GoDutch extends Activity {
 
     private static int CAMERA_REQUEST_CODE = 0;
-    private static int GALLERY_REQUEST_CODE = 1;
+    private static int REQUEST_CODE_GALLERY = 1;
 
 
     public static final String PACKAGE_NAME = "psoc.com.godutch";
@@ -41,9 +40,9 @@ public class GoDutch extends Activity {
 
     private static final String TAG = "GoDutch.java";
 
-    protected Button _button;
+    protected Button button;
     // protected ImageView _image;
-    protected EditText _field;
+    protected EditText field;
     protected String _path;
     protected boolean _taken;
 
@@ -102,9 +101,9 @@ public class GoDutch extends Activity {
         setContentView(R.layout.main);
 
         // _image = (ImageView) findViewById(R.id.image);
-        _field = (EditText) findViewById(R.id.field);
-        _button = (Button) findViewById(R.id.OCRbutton);
-        _button.setOnClickListener(new View.OnClickListener() {
+        field = (EditText) findViewById(R.id.field);
+        button = (Button) findViewById(R.id.OCRbutton);
+        button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
 
@@ -115,16 +114,19 @@ public class GoDutch extends Activity {
             }
         });
 
-        _button = (Button) findViewById(R.id.ocrFromGallery);
-        _button.setOnClickListener(new View.OnClickListener() {
+        button = (Button) findViewById(R.id.ocrFromGallery);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startOCRFromGallery();
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_CODE_GALLERY);
+
             }
         });
 
-        _button = (Button) findViewById(R.id.test_image);
-        _button.setOnClickListener(new View.OnClickListener() {
+        button = (Button) findViewById(R.id.test_image);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
@@ -132,8 +134,8 @@ public class GoDutch extends Activity {
             }
         });
 
-        _button = (Button) findViewById(R.id.go_to_home);
-        _button.setOnClickListener(new View.OnClickListener() {
+        button = (Button) findViewById(R.id.go_to_home);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Home.class);
@@ -145,15 +147,14 @@ public class GoDutch extends Activity {
     }
 
     private void startOCRFromGallery() {
-        final Intent galleryIntent = new Intent();
+        Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+        startActivityForResult(galleryIntent, REQUEST_CODE_GALLERY);
     }
 
     // Simple android photo capture:
     // http://labs.makemachine.net/2010/03/simple-android-photo-capture/
-
 
 
     @Override
@@ -234,15 +235,15 @@ public class GoDutch extends Activity {
         recognizedText = recognizedText.trim();
 
         if (recognizedText.length() != 0) {
-            _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
-            _field.setSelection(_field.getText().toString().length());
+            field.setText(field.getText().toString().length() == 0 ? recognizedText : field.getText() + " " + recognizedText);
+            field.setSelection(field.getText().toString().length());
         }
 
         // Cycle done.
     }
 
     protected void onCameraPhotoTaken(Intent data) {
-       //FROM HERE
+        //FROM HERE
         Bundle extras = data.getExtras();
         Bitmap bitmap = (Bitmap) extras.get("data");
 
