@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -140,6 +141,15 @@ public class GoDutch extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Home.class);
                 startActivity(intent);
+            }
+        });
+
+        button = (Button) findViewById(R.id.clear_text);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView textView = (TextView) findViewById(R.id.field);
+                textView.setText("");
             }
         });
 
