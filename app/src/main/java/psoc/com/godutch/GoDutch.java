@@ -149,6 +149,7 @@ public class GoDutch extends Activity {
     // http://labs.makemachine.net/2010/03/simple-android-photo-capture/
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
