@@ -1,19 +1,20 @@
 package psoc.com.godutch;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class Home extends AppCompatActivity {
+public class Home extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        TextView tv = (TextView) findViewById(R.id.home_app_title);
+        TextView tv = (TextView) findViewById(R.id.appTitle);
         int height_in_pixels = tv.getLineCount() * tv.getLineHeight(); //approx height text
         tv.setHeight(height_in_pixels);
     }
