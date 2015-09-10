@@ -1,4 +1,4 @@
-package psoc.com.godutch;
+package psoc.com.godutch.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import psoc.com.godutch.R;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.model.Person;
 
@@ -53,19 +54,20 @@ public class BillAdapter extends ArrayAdapter<Line> {
         productDescription.setText(line.getProductDescription());
         productPrice.setText(String.valueOf(line.getPrice()));
 
-       // FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-         //       mContext.getLayoutParams().WRAP_CONTENT, mContext.getLayoutParams().WRAP_CONTENT);
 
         //using this layoutParams instead just for testing purposes
-         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(30, 30);
+         //FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(30, 30);
 
         //add the people that are set to share this bill
+        //for now it's hardcoded
+        /*
         for(Person person : line.getPersons()){
             Button button = new Button(people.getContext()); //not sure if it is the right context
             button.setBackgroundResource(R.drawable.button_circle_design);
             button.setText(person.getShortName());
             button.setLayoutParams(layoutParams);
         }
+        */
 
 
 
