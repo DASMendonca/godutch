@@ -240,7 +240,7 @@ public class ParsingTests extends InstrumentationTestCase {
 
 
 
-        ArrayList<Line> lines = Line.linesFromString(strC);
+        /*ArrayList<Line> lines = Line.linesFromString(strC);
 
         assertTrue(lines.size() == 2);
 
@@ -254,6 +254,6 @@ public class ParsingTests extends InstrumentationTestCase {
         assertTrue(Math.abs(l2.getPrice()- 0.70) < 0.0001);
         assertTrue(l2.getName().equals("SQPA"));
 
-
+*/
     }
 }

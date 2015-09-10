@@ -52,6 +52,36 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAllCaps="false"
+                android:text="New Bill"
+                android:id="@+id/btn_new_bill"
+                android:drawableRight="@drawable/ic_add_circle_outline_black_48dp"
+                android:drawablePadding="10dp"
+                android:textColor="#616161"
+                android:background="#f7fdff"
+                android:textSize="35dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#616161"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -60,30 +90,20 @@
             android:gravity="center"
             android:layout_gravity="center">
 
-            <TextView
+            <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="New Bill"
-                android:id="@+id/textView" />
+                android:layout_height="fill_parent"
+                android:textAllCaps="false"
+                android:text="My Bills"
+                android:id="@+id/btn_my_bills"
+                android:drawableRight="@drawable/ic_receipt_black_48dp"
+                android:textColor="#616161"
+                android:background="#f7fdff"
+                android:textSize="35dp"
+                android:drawablePadding="10dp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/logo_1"
-                android:id="@+id/add_bill" />
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#616161"/>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"></LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
