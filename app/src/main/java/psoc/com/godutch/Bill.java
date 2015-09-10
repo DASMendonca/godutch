@@ -1,16 +1,24 @@
 package psoc.com.godutch;
 
-import android.support.v7.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-public class Bill extends AppCompatActivity {
+import java.util.List;
+
+public class Bill extends Activity {
+
+    private ListView rowListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
+
+        rowListView =(ListView) findViewById(R.id.billListView);
     }
 
     @Override
