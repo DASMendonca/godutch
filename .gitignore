@@ -13,3 +13,9 @@
 /libraries/libraries.iml
 /captures
 libraries/tess-two.zip
+
+*.aar
+
+libraries/tess-two/build/outputs/aar/tess-two-release.aar
+
+libraries/tess-two/build/outputs/aar/tess-two-debug.aar
