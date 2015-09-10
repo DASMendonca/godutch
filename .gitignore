@@ -9,6 +9,7 @@
 /.idea
 /.gradle
 *.iml
+/libraries/tess-two
 /libraries/libraries.iml
 /captures
 libraries/tess-two.zip
