@@ -7,5 +7,6 @@
 /.idea/misc.xml
 /.idea/gradle.xml
 /.idea
+/.gradle
 *.iml
 /captures
