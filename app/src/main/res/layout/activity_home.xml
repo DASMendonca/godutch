@@ -7,45 +7,54 @@
     tools:context="psoc.com.godutch.Home"
     android:gravity="fill_horizontal"
     android:background="#d6d6d6"
-    android:weightSum="3">
+    android:weightSum="4">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#616161"
-        android:weightSum="2">
+        android:gravity="top|center_horizontal"
+        android:background="#616161">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="goDutch"
+            android:gravity="center_horizontal"
             android:id="@+id/appTitle"
-            android:layout_weight="1"
             android:textColor="#f8feff"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:elegantTextHeight="true" />
+            android:textSize="45dp" />
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:id="@+id/imageView"
-            android:layout_weight="1"
-            android:baselineAlignBottom="false"
             android:background="@drawable/logo_1"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/app_name" />
-    </LinearLayout>
+            android:layout_below="@id/appTitle"
+            android:nestedScrollingEnabled="false"
+            android:longClickable="false" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:layout_gravity="center">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"></LinearLayout>
     </FrameLayout>
+
 </LinearLayout>
