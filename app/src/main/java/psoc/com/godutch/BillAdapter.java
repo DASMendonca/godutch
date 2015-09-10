@@ -10,33 +10,36 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import psoc.com.godutch.model.Line;
+import psoc.com.godutch.model.Person;
+
 /**
  * Created by asmen on 09/09/2015.
  */
-public class BillAdapter extends ArrayAdapter<BillRow> {
+public class BillAdapter extends ArrayAdapter<Line> {
 
     Context mContext;
     int mLayoutResourceId;
-    BillRow[] billRows = null;
+    Line[] lines = null;
 
-    public BillAdapter(Context context, int resource, BillRow[] billRows) {
-        super(context, resource, billRows);
+    public BillAdapter(Context context, int resource, Line[] lines) {
+        super(context, resource, lines);
 
         this.mLayoutResourceId = resource;
         this.mContext = context;
-        this.billRows = billRows;
+        this.lines = lines;
     }
 
 
     @Override
-    public BillRow getItem(int position) {
+    public Line getItem(int position) {
         return super.getItem(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        BillRow billRow = getItem(position);
+        Line line = getItem(position);
 
         //inflate the layout for a single row
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -47,22 +50,24 @@ public class BillAdapter extends ArrayAdapter<BillRow> {
         TextView productPrice = (TextView) row.findViewById(R.id.rowPrice);
         LinearLayout people = (LinearLayout) row.findViewById(R.id.peopleLayout);
 
-        productDescription.setText(billRow.getProductDescription());
-        productPrice.setText(String.valueOf(billRow.getPrice()));
+        productDescription.setText(line.getProductDescription());
+        productPrice.setText(String.valueOf(line.getPrice()));
 
        // FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-         //       people.getLayoutParams().WRAP_CONTENT, people.getLayoutParams().WRAP_CONTENT);
+         //       mContext.getLayoutParams().WRAP_CONTENT, mContext.getLayoutParams().WRAP_CONTENT);
 
         //using this layoutParams instead just for testing purposes
          FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(30, 30);
 
         //add the people that are set to share this bill
-        for(Person person : billRow.getPersons()){
+        for(Person person : line.getPersons()){
             Button button = new Button(people.getContext()); //not sure if it is the right context
             button.setBackgroundResource(R.drawable.button_circle_design);
             button.setText(person.getShortName());
             button.setLayoutParams(layoutParams);
         }
+
+
 
         return row;
     }

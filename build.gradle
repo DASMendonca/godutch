@@ -24,10 +24,5 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        classpath "gradle.plugin.me.tatarka:gradle-retrolambda:3.2.2"
-    }
+
 }
-
-apply plugin: "me.tatarka.retrolambda"
-

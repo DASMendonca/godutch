@@ -12,16 +12,18 @@ import psoc.com.godutch.parsing.LineWithPriceFilter;
 import psoc.com.godutch.parsing.O_ReplacerFilter;
 
 /**
- * Created by mppl on 08/09/15.
+ * Created by asmen on 09/09/2015.
  */
 public class Line implements Serializable{
 
 
+    String productDescription;
+    float price;
+    ArrayList<Person> persons;
+
+
+
     int quantity;
-    String name = "";
-    float price = -1;
-
-
 
     public Line(String input){
 
@@ -53,9 +55,9 @@ public class Line implements Serializable{
 
             string = string.trim();
 
-            if (string.length() > name.length()){
+            if (string.length() > productDescription.length()){
 
-                name = string;
+                productDescription = string;
 
             }
 
@@ -81,7 +83,7 @@ public class Line implements Serializable{
 
             Line l = new Line(lineString);
 
-            if (l.name.equals("Total") || l.price == 0.00){
+            if (l.productDescription.equals("Total") || l.price == 0.00){
 
                 break;
 
@@ -95,10 +97,10 @@ public class Line implements Serializable{
 
 
 
-    public String getName(){
+    public String getProductDescription(){
 
 
-        return name;
+        return productDescription;
 
     }
 
@@ -106,5 +108,37 @@ public class Line implements Serializable{
     public float getPrice(){
 
         return price;
+    }
+
+    public Line(ArrayList<Person> persons, float price, String productName) {
+        this.persons = persons;
+        this.price = price;
+        this.productDescription = productName;
+    }
+
+    public Line(float price, String productName) {
+        this.price = price;
+        this.productDescription = productName;
+    }
+
+    public ArrayList<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(ArrayList<Person> persons) {
+        this.persons = persons;
+    }
+
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+
+    public void addPerson(Person person){
+        persons.add(person);
     }
 }
