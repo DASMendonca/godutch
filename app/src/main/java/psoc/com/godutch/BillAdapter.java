@@ -54,7 +54,7 @@ public class BillAdapter extends ArrayAdapter<Line> {
         productPrice.setText(String.valueOf(line.getPrice()));
 
        // FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-         //       people.getLayoutParams().WRAP_CONTENT, people.getLayoutParams().WRAP_CONTENT);
+         //       mContext.getLayoutParams().WRAP_CONTENT, mContext.getLayoutParams().WRAP_CONTENT);
 
         //using this layoutParams instead just for testing purposes
          FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(30, 30);
@@ -66,6 +66,8 @@ public class BillAdapter extends ArrayAdapter<Line> {
             button.setText(person.getShortName());
             button.setLayoutParams(layoutParams);
         }
+
+
 
         return row;
     }

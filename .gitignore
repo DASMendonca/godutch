@@ -9,4 +9,5 @@
 /.idea
 /.gradle
 *.iml
+/libraries/libraries.iml
 /captures
