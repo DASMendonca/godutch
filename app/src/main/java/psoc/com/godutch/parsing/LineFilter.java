@@ -12,7 +12,7 @@ public class LineFilter extends Filter {
 
 
 
-    public ArrayList<String> filter(String input){
+    public ArrayList<String> filter(ArrayList<String> input){
 
 
         return stringsMatchesPattern("(.*)(?:\n) | (.*)(?:$)",input);
