@@ -60,7 +60,7 @@ public class BillAdapter extends ArrayAdapter<Line> {
          FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(30, 30);
 
         //add the people that are set to share this bill
-        for(Person person : line.getPersons()){
+        for(Person person : line.getBill().getPersons()){
             Button button = new Button(people.getContext()); //not sure if it is the right context
             button.setBackgroundResource(R.drawable.button_circle_design);
             button.setText(person.getShortName());

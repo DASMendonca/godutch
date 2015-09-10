@@ -11,6 +11,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import psoc.com.godutch.R;
+import psoc.com.godutch.parsing.B_ReplacerFilter;
+import psoc.com.godutch.parsing.L_ReplacerFilter;
+import psoc.com.godutch.parsing.LineFilter;
+import psoc.com.godutch.parsing.LineWithPriceFilter;
+import psoc.com.godutch.parsing.O_ReplacerFilter;
 
 public class Bill extends Activity implements Serializable{
 
@@ -18,11 +23,11 @@ public class Bill extends Activity implements Serializable{
 
     Line[] lines;
 
-    ArrayList<psoc.com.godutch.model.Person> persons = new ArrayList<psoc.com.godutch.model.Person>();
+    ArrayList<Person> persons = new ArrayList<psoc.com.godutch.model.Person>();
 
     public Bill(String s){
 
-        ArrayList<Line> lines = Line.linesFromString(s);
+        ArrayList<Line> lines = this.linesFromString(s,null);
 
         this.lines = lines.toArray(new Line[lines.size()]);
 
@@ -81,4 +86,45 @@ public class Bill extends Activity implements Serializable{
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public Person[] getPersons(){
+
+        return persons.toArray(new Person[persons.size()]);
+    }
+
+
+
+
+    public static ArrayList<Line> linesFromString(String inputString,Bill bill){
+
+        LineFilter f1 = new LineFilter();
+        O_ReplacerFilter f2 = new O_ReplacerFilter();
+        L_ReplacerFilter f3 = new L_ReplacerFilter();
+        B_ReplacerFilter f4 = new B_ReplacerFilter();
+        LineWithPriceFilter f5 = new LineWithPriceFilter();
+
+        ArrayList<String> input = new ArrayList<>();
+        input.add(inputString);
+        ArrayList<String> output = f5.filter(f4.filter(f3.filter(f2.filter(f1.filter(input)))));
+
+        ArrayList<Line> lines = new ArrayList<>();
+
+        for (String lineString:output){
+
+            Line l = new Line(lineString,bill);
+
+            if (l.productDescription.equals("Total") || l.price == 0.00){
+
+                break;
+
+            }
+            lines.add(l);
+
+        }
+
+        return lines;
+    }
+
+
 }

@@ -4,6 +4,7 @@ import android.test.InstrumentationTestCase;
 
 import java.util.ArrayList;
 
+import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.parsing.B_ReplacerFilter;
 import psoc.com.godutch.parsing.L_ReplacerFilter;
@@ -203,7 +204,7 @@ public class ParsingTests extends InstrumentationTestCase {
 
 
 
-        ArrayList<Line> lines = Line.linesFromString(strA);
+        ArrayList<Line> lines = Bill.linesFromString(strA, null);
 
         assertTrue(lines.size() == 1);
 
@@ -219,7 +220,7 @@ public class ParsingTests extends InstrumentationTestCase {
 
 
 
-        ArrayList<Line> lines = Line.linesFromString(strB);
+        ArrayList<Line> lines = Bill.linesFromString(strB,null);
 
         assertTrue(lines.size() == 2);
 
