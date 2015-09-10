@@ -11,5 +11,6 @@
     <string name="button_from_gallery">Gallery</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_home">Home</string>
+    <string name="title_activity_bill">Bill</string>
     
 </resources>
