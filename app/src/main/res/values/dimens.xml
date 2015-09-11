@@ -4,5 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="bill_person_horizontal_margin">10dp</dimen>
     <dimen name="circular_shortname_size">35dp</dimen>
+
+
+    <dimen name="round_button_side">50dp</dimen>
+    <dimen name="round_button_margin">5dp</dimen>
     <dimen name="action_bar_title">24dp</dimen>
 </resources>
