@@ -68,6 +68,7 @@ public class Line implements Serializable{
         }
 
     }
+    public Line(){}
 
 
 
