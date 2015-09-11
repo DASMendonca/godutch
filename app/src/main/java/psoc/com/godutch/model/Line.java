@@ -29,7 +29,15 @@ public class Line implements Serializable{
 
     public Line(String input,Bill parent){
 
+
+
         parent_bill = parent;
+
+        for (Person person : parent_bill.persons) {
+
+            quantities.put(person,1);
+        }
+
 
         Pattern numberPattern = Pattern.compile("^.*?(\\d+[\\.,]\\d{2}).*?$");
 
@@ -67,10 +75,9 @@ public class Line implements Serializable{
 
         }
 
+
+
     }
-    public Line(){}
-
-
 
     public String getProductDescription(){
 
@@ -90,29 +97,8 @@ public class Line implements Serializable{
 
         return parent_bill;
     }
-/*
-    public Line(ArrayList<Person> persons, float price, String productName) {
-        this.persons = persons;
-        this.price = price;
-        this.productDescription = productName;
-    }
-
-    */
-    /*
-    public Line(float price, String productName) {
-        this.price = price;
-        this.productDescription = productName;
-    }
-    */
-/*
-    public ArrayList<Person> getPersons() {
-        return persons;
-    }
-    */
-
 
     //Setters
-
 
     public void setPrice(float price) {
         this.price = price;
@@ -122,50 +108,23 @@ public class Line implements Serializable{
         this.productDescription = productDescription;
     }
 
-
-
     public void addQuantity(Person p){
 
-
-        if (quantities.get(p) != null){
-
-            quantities.put(p,quantities.get(p)+1);
-        }
-
-        else{
-
-            quantities.put(p,1);
-        }
-
+        quantities.put(p,quantities.get(p)+1);
     }
 
     public void removeQuantity(Person p){
 
-        if (quantities.get(p) != null){
 
-            if(quantities.get(p) == 1){
-                quantities.remove(p);
-            }
-            else{
-                quantities.put(p,quantities.get(p)+1);
-            }
-        }
+        quantities.put(p,quantities.get(p)-1);
+
+
     }
 
     public int quantityForPerson(Person p){
 
-        if (quantities.keySet().size() == 0){
 
-            return 1;
-        }
-
-        else if (quantities.get(p) != null){
-
-            return quantities.get(p);
-
-        }
-
-        return 0;
+        return quantities.get(p);
 
     }
 
@@ -199,4 +158,40 @@ public class Line implements Serializable{
         return 0;
 
     }
+
+    public boolean allPersonsHaveOneAsQuantity(){
+
+
+        for (Person person : this.quantities.keySet()) {
+
+            if (this.quantities.get(person) != 1){
+
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public void personAdded(Person p) {
+
+
+        if(allPersonsHaveOneAsQuantity()){
+
+            quantities.put(p,1);
+        }
+        else{
+
+            quantities.put(p,0);
+        }
+
+    }
+
+    public void personRemoved(Person p){
+
+
+        quantities.remove(p);
+    }
+
 }

@@ -9,7 +9,7 @@
         android:layout_width="@dimen/circular_shortname_size"
         android:layout_height="@dimen/circular_shortname_size"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:background="@drawable/button_circle_design"
+        android:background="@drawable/button_circle_design_gray"
         android:text="XX" />
 
 </LinearLayout>
