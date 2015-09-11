@@ -54,18 +54,6 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
             Line[] l = bill.getLines();
 
-            if(l.length == 1){
-
-
-                Line[] newArray = new Line[2];
-                newArray[0] = l[0];
-                newArray[1] = new Line();
-                newArray[1].setPrice(10.0f);
-                newArray[1].setProductDescription("Ola");
-
-                l = newArray;
-            }
-
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, l);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,

@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import psoc.com.godutch.GoDutch;
+import psoc.com.godutch.Home;
 import psoc.com.godutch.R;
 import psoc.com.godutch.parsing.B_ReplacerFilter;
 import psoc.com.godutch.parsing.L_ReplacerFilter;
@@ -43,24 +45,32 @@ public class Bill implements Serializable{
 
     public Bill(Bitmap bm){
 
+
         TessBaseAPI baseApi = new TessBaseAPI();
         baseApi.setDebug(true);
-        baseApi.init(GoDutch.DATA_PATH, GoDutch.lang);
+        baseApi.init(Home.DATA_PATH, Home.lang);
         baseApi.setImage(bm);
 
-        String parsedText = baseApi.getUTF8Text();
+        String recognizedText = baseApi.getUTF8Text();
 
-        this.buildFromString(parsedText);
+        baseApi.end();
 
+        // You now have the text in recognizedText var, you can do anything with it.
+        // We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
+        // so that garbage doesn't make it to the display.
+
+        //Log.v(Home.TAG, "OCRED TEXT: " + recognizedText);
+
+        if (Home.lang.equalsIgnoreCase("eng")) {
+            recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
+        }
+
+        recognizedText = recognizedText.trim();
+
+        this.buildFromString(recognizedText);
     }
 
-    public Bill(InputStream is){
 
-
-
-
-
-    }
 
     public Bill(String s){
 
@@ -70,35 +80,10 @@ public class Bill implements Serializable{
 
     private void buildFromString(String s){
 
-        ArrayList<Line> lines = this.linesFromString(s,null);
+        ArrayList<Line> lines = this.linesFromString(s,this);
         //debugDefaultParams(lines);
         this.lines = lines.toArray(new Line[lines.size()]);
 
-    }
-
-    private void debugDefaultParams(ArrayList<Line> lines) {
-        if(GoDutch.DEBUG){
-            Line line = new Line();
-            line.parent_bill = this;
-            line.price = 4.5f;
-            line.productDescription = "Example 1";
-            lines.add(line);
-
-            line = new Line();
-            line.price = 10.5f;
-            line.productDescription = "Example 2";
-            lines.add(line);
-
-            Person person = new Person("Daniel M.", "dm");
-            this.addPerson(person);
-            person = new Person("José M.", "jm");
-            this.addPerson(person);
-            person = new Person("Rodolfo R.", "rr");
-            this.addPerson(person);
-            person = new Person("Vitor M.", "vm");
-            this.addPerson(person);
-
-        }
     }
 
     public Bill(Line[] lines){
@@ -110,10 +95,16 @@ public class Bill implements Serializable{
 
         persons.add(p);
 
+        for (Line line : lines) {
+
+            line.personAdded(p);
+
+        }
+
     }
 
 
-    public void removePerson(psoc.com.godutch.model.Person p){
+    public void removePerson(Person p){
 
         int indexToRemove = -1;
         for (int i = 0; i < persons.size(); i++) {
@@ -126,6 +117,12 @@ public class Bill implements Serializable{
 
             persons.remove(indexToRemove);
 
+        }
+
+
+        for (Line line : lines) {
+
+            line.personRemoved(p);
         }
 
     }
