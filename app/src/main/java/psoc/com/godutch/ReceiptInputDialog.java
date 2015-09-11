@@ -1,6 +1,7 @@
 package psoc.com.godutch;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,7 +24,17 @@ import psoc.com.godutch.model.Bill;
  */
 public class ReceiptInputDialog extends DialogFragment {
 
-    private static int OPTION_SELETED = -1;
+    private DialogClickListener callback;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callback = (DialogClickListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement onViewSelected");
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -33,21 +44,19 @@ public class ReceiptInputDialog extends DialogFragment {
         CharSequence items[] = {"Use Gallery", "Use Camera"/*, "Use PDF" */};
 
         builder.setTitle(R.string.bill_input)
-                .setItems(items, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
-                        OPTION_SELETED = which;
-                        notify();
-                        dialogInterface.cancel();
+                .setNeutralButton("Use gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callback.selectFromGallery();
                     }
-                });
+                })
+        .setNeutralButton("Use Camera",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callback.selectFromCamera();
+            }
+        });
 
         return builder.create();
-    }
-
-    public int getOptionSeleted(){
-        return OPTION_SELETED;
     }
 }
