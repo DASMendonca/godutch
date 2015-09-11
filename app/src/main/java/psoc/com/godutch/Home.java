@@ -1,6 +1,8 @@
 package psoc.com.godutch;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -11,11 +13,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -32,8 +34,10 @@ import psoc.com.godutch.tests.ParsingTests;
 
 public class Home extends Activity {
 
-    protected Button button;
 
+    protected Button button;
+    private static int REQUEST_CAMERA_CODE = 0;
+    private static int REQUEST_CODE_GALLERY = 1;
     public final static Boolean DEBUG = true;
 
 
@@ -41,15 +45,10 @@ public class Home extends Activity {
     public static final String DATA_PATH = Environment
             .getExternalStorageDirectory().toString() + "/GoDutch/";
 
-    // You should have the trained data file in assets folder
-    // You can get them at:
-    // http://code.google.com/p/tesseract-ocr/downloads/list
-    public static final String lang = "por";
 
+    public static final String lang = "por";
     private static final String TAG = "GoDutch.java";
 
-    // protected ImageView _image;
-    protected EditText field;
     protected String _path;
     protected boolean _taken;
 
@@ -59,6 +58,31 @@ public class Home extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        //Hide Action Bar
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
+
+
+        TextView tv = (TextView) findViewById(R.id.appTitle);
+        int height_in_pixels = tv.getLineCount() * tv.getLineHeight(); //approx height text
+        tv.setHeight(height_in_pixels);
+
+        button = (Button) findViewById(R.id.btn_new_bill);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReceiptInputDialog dlg = new ReceiptInputDialog();
+                dlg.show(getFragmentManager(), "ola");
+
+            }
+        });
+
+
+
+        //TESS Preparation
 
         String[] paths = new String[]{DATA_PATH, DATA_PATH + "tessdata/"};
 
@@ -81,60 +105,14 @@ public class Home extends Activity {
         // This area needs work and optimization
         prepareOCRForTess();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
-        TextView tv = (TextView) findViewById(R.id.appTitle);
-        int height_in_pixels = tv.getLineCount() * tv.getLineHeight(); //approx height text
-        tv.setHeight(height_in_pixels);
-
-        button = (Button) findViewById(R.id.btn_new_bill);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ReceiptInputDialog dlg = new ReceiptInputDialog();
-                dlg.show(getFragmentManager(), "ola");
-
-            }
-        });
-
         _path = DATA_PATH + "/ocr.jpg";
 
-    }
-
-
-    private void prepareOCRForTess() {
-        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
-            try {
-
-                AssetManager assetManager = getAssets();
-                InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
-                //GZIPInputStream gin = new GZIPInputStream(in);
-                OutputStream out = new FileOutputStream(DATA_PATH
-                        + "tessdata/" + lang + ".traineddata");
-
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                //while ((lenf = gin.read(buff)) > 0) {
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-                in.close();
-                //gin.close();
-                out.close();
-
-                Log.v(TAG, "Copied " + lang + " traineddata");
-            } catch (IOException e) {
-                Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
-            }
-        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        //getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
@@ -155,7 +133,6 @@ public class Home extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         Log.i(TAG, "resultCode: " + resultCode);
 
         if (resultCode == RESULT_OK)
@@ -173,21 +150,23 @@ public class Home extends Activity {
     }
 
 
-    protected void onPhotoSelected(Uri uri) {
-        Uri selectedImage = uri;
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        Cursor cursor = getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
+    public void selectFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_CODE_GALLERY);
+    }
 
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
 
-        Bitmap bill = BitmapFactory.decodeFile(picturePath);
+    public void selectFromCamera() {
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
 
-        onPhotoTaken(bill);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA_CODE);
+
+    }
+
+    public void selectFromPDF() {
 
     }
 
@@ -242,6 +221,33 @@ public class Home extends Activity {
         // Cycle done.
     }
 
+    private void prepareOCRForTess() {
+        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
+            try {
+
+                AssetManager assetManager = getAssets();
+                InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
+                //GZIPInputStream gin = new GZIPInputStream(in);
+                OutputStream out = new FileOutputStream(DATA_PATH
+                        + "tessdata/" + lang + ".traineddata");
+
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                //while ((lenf = gin.read(buff)) > 0) {
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                //gin.close();
+                out.close();
+
+                Log.v(TAG, "Copied " + lang + " traineddata");
+            } catch (IOException e) {
+                Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
+            }
+        }
+    }
 
     protected void onCameraPhotoTaken(Intent data) {
         //FROM HERE
@@ -251,6 +257,24 @@ public class Home extends Activity {
         // _image.setImageBitmap( bitmap );
 
         onPhotoTaken(bitmap);
+
+    }
+
+    protected void onPhotoSelected(Uri uri) {
+        Uri selectedImage = uri;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = getContentResolver().query(selectedImage,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        Bitmap bill = BitmapFactory.decodeFile(picturePath);
+
+        onPhotoTaken(bill);
 
     }
 }

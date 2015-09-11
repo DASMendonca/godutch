@@ -1,6 +1,7 @@
 package psoc.com.godutch;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,60 +24,34 @@ import psoc.com.godutch.model.Bill;
  */
 public class ReceiptInputDialog extends DialogFragment {
 
-    private static int CAMERA_REQUEST_CODE = 0;
-    private static int REQUEST_CODE_GALLERY = 1;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        CharSequence items[] = {"Use Camera", "Use Gallery" /*, "Use PDF" */};
 
-        builder.setTitle(R.string.bill_input)
-                .setItems(items, new DialogInterface.OnClickListener() {
+        CharSequence items[] = {"Use Gallery", "Use Camera"/*, "Use PDF" */};
 
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
+        builder.setTitle(R.string.bill_input);
+        builder.setItems(items,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-                        Dialog dialog  = (Dialog) dialogInterface;
-                        Context context = dialog.getContext();
-                        Intent intent = null;
-                        switch (which) {
-                            case 0:
-                                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (intent.resolveActivity(context.getPackageManager()) != null) {
-                                    getActivity().startActivityForResult(intent, CAMERA_REQUEST_CODE);
-                                }
-                                break;
-                            case 1:
-                                intent = new Intent(Intent.ACTION_PICK,
-                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                getActivity().startActivityForResult(intent, REQUEST_CODE_GALLERY);
-                                break;
-                            case 2:
-                                /*Intent getPDF = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (getPDF.resolveActivity(getContext().getPackageManager()) != null) {
-                                    startActivityForResult(getPDF, CAMERA_REQUEST_CODE);
-                                }*/
-                                break;
-                            default:
-                                break;
-                        }
+                if (which == 0) {
 
-                        if (null != intent) {
+                    ((Home) getActivity()).selectFromGallery();
 
+                }
+                else if (which == 1){
 
-                        }
+                    ((Home) getActivity()).selectFromCamera();
 
+                }
 
+            }
+        });
 
-                    }
-                });
 
         return builder.create();
     }
-
-
 }
