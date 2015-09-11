@@ -32,7 +32,7 @@ import com.joanzapata.pdfview.listener.OnDrawListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 
 import psoc.com.godutch.model.Bill;
-import psoc.com.godutch.model.BillActivity;
+import psoc.com.godutch.BillActivity;
 import psoc.com.godutch.tests.ParsingTests;
 
 public class GoDutch extends Activity {
