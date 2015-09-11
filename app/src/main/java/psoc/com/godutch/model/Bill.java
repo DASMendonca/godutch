@@ -2,21 +2,34 @@ package psoc.com.godutch.model;
 
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.RectF;
+import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageTree;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import psoc.com.godutch.GoDutch;
 import psoc.com.godutch.R;
@@ -26,28 +39,71 @@ import psoc.com.godutch.parsing.LineFilter;
 import psoc.com.godutch.parsing.LineWithPriceFilter;
 import psoc.com.godutch.parsing.O_ReplacerFilter;
 
-public class Bill extends Activity implements Serializable{
+
+import com.joanzapata.pdfview.*;
+
+public class Bill implements Serializable{
 
     Line[] lines;
 
-    ArrayList<Person> persons = new ArrayList<psoc.com.godutch.model.Person>();
+    ArrayList<Person> persons = new ArrayList<Person>();
+
+
+    public Bill(Bitmap bm){
+
+        TessBaseAPI baseApi = new TessBaseAPI();
+        baseApi.setDebug(true);
+        baseApi.init(GoDutch.DATA_PATH, GoDutch.lang);
+        baseApi.setImage(bm);
+
+        String parsedText = baseApi.getUTF8Text();
+
+        this.buildFromString(parsedText);
+
+    }
 
     public Bill(InputStream is){
 
-
-        PDFTextStripper pdfStripper = null;
-        PDDocument pdDoc = null;
-        COSDocument cosDoc = null;
-
         try {
-            PDFParser parser = new PDFParser(is);
-            parser.parse();
-            cosDoc = parser.getDocument();
-            pdfStripper = new PDFTextStripper();
-            pdDoc = new PDDocument(cosDoc);
-            pdfStripper.setStartPage(1);
-            pdfStripper.setEndPage(5);
-            String parsedText = pdfStripper.getText(pdDoc);
+
+
+            /*
+            PDFView pdfView = new PDFView();
+            pdfView.fromAsset("dan.pdf")
+                    .pages(0, 2, 1, 3, 3, 3)
+                    .defaultPage(1)
+                    .showMinimap(false)
+                    .enableSwipe(true)
+                    .load();*/
+            /*
+            PDFFile f = new PDFFile(ByteBuffer.wrap(IOUtils.toByteArray(is)));
+
+            PDFPage page = f.getPage(0);
+
+            float wi = page.getWidth();
+            float hei = page.getHeight();
+
+            RectF clip = null;
+
+            Bitmap bi = page.getImage((int) (wi * 1.25), (int) (hei * 1.25), clip);
+
+*/
+
+            PDDocument pdf = PDDocument.load(is, true);
+
+            PDFRenderer renderer = new PDFRenderer(pdf);
+
+            Bitmap bm = renderer.renderImage(0);
+
+            //Bitmap bm = renderer.renderImage(0,(float)0.5, Bitmap.Config.RGB_565);
+
+            TessBaseAPI baseApi = new TessBaseAPI();
+            baseApi.setDebug(true);
+            baseApi.init(GoDutch.DATA_PATH, GoDutch.lang);
+            baseApi.setImage(bm);
+
+            String parsedText = baseApi.getUTF8Text();
+
             this.buildFromString(parsedText);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -65,7 +121,7 @@ public class Bill extends Activity implements Serializable{
     private void buildFromString(String s){
 
         ArrayList<Line> lines = this.linesFromString(s,null);
-        debugDefaultParams(lines);
+        //debugDefaultParams(lines);
         this.lines = lines.toArray(new Line[lines.size()]);
 
     }

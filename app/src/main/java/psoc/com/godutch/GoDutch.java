@@ -12,6 +12,10 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +27,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
+import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.listener.OnDrawListener;
+import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.BillActivity;
@@ -56,6 +63,8 @@ public class GoDutch extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
 
         String[] paths = new String[]{DATA_PATH, DATA_PATH + "tessdata/"};
 
@@ -135,6 +144,61 @@ public class GoDutch extends Activity {
         });
 
         _path = DATA_PATH + "/ocr.jpg";
+
+
+
+
+
+
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+
+        com.joanzapata.pdfview.PDFView pdfView = (com.joanzapata.pdfview.PDFView) findViewById(R.id.pdfview);
+
+       // pdfView.setDrawingCacheEnabled(true);
+
+       // pdfView.buildDrawingCache();
+
+
+        pdfView.fromAsset("dan.pdf")
+                .pages(0)
+                .defaultPage(0)
+                .showMinimap(false)
+                .enableSwipe(true).onLoad(new OnLoadCompleteListener() {
+                    @Override
+                    public void loadComplete(int i) {
+
+
+                     }
+                }).load();
+
+
+
+
+        pdfView.layout(0,0,400,600);
+
+        Bitmap b = Bitmap.createBitmap(pdfView.getWidth(),
+                pdfView.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+
+
+        Canvas c = new Canvas(b);
+        pdfView.draw(c);
+
+        Bill bill = new Bill(b);
+
+
+
+
+
     }
 
     private void prepareOCRForTess() {
@@ -283,6 +347,31 @@ public class GoDutch extends Activity {
 
         onPhotoTaken(bitmap);
 
+    }
+
+
+    public static Bitmap getBitmapFromView(View view) {
+
+
+        Bitmap map;
+
+
+        //Define a bitmap with the same size as the view
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getLayoutParams().width, view.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        else
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
     }
 
     // www.Gaut.am was here
