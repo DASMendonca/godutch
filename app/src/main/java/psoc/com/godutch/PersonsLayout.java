@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.model.Person;
 
@@ -52,23 +53,24 @@ public class PersonsLayout extends FrameLayout{
         b = (Button) this.findViewById(R.id.button);
         counter = (TextView) this.findViewById(R.id.counter);
 
+        if(line != null && person != null && counter != null){
+
+            counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+        }
+
         b.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                line.addQuantity(person);
+
+                counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+
 
             }
         });
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-
-
-        super.onLayout(changed, left, top, right, bottom);
-
-
-
 
         b.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -78,5 +80,28 @@ public class PersonsLayout extends FrameLayout{
 
             }
         });
+    }
+
+
+    public void setPerson(Person person) {
+        this.person = person;
+
+        if(line != null && person != null && counter != null){
+
+            counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+        }
+    }
+
+    public void setLine(Line line) {
+        this.line = line;
+
+        if(line != null && person != null && counter != null){
+
+            counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+        }
+
+
     }
 }
