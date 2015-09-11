@@ -1,5 +1,6 @@
 package psoc.com.godutch;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -58,9 +59,11 @@ public class Home extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_home);
+
+        //Hide Action Bar
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
 
 
         TextView tv = (TextView) findViewById(R.id.appTitle);
@@ -109,7 +112,7 @@ public class Home extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        //getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
