@@ -25,5 +25,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile project(':libraries:tess-two')
+    compile 'org.apache:pdfbox-android:1.8.9.0'
 }
 

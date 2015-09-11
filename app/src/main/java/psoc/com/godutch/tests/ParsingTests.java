@@ -1,9 +1,12 @@
 package psoc.com.godutch.tests;
 
+import android.content.res.Resources;
 import android.test.InstrumentationTestCase;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.parsing.B_ReplacerFilter;
 import psoc.com.godutch.parsing.L_ReplacerFilter;
@@ -17,7 +20,7 @@ import psoc.com.godutch.parsing.O_ReplacerFilter;
 public class ParsingTests extends InstrumentationTestCase {
 
 
-    private static final String strA = "Nome Consumidor fina1\n" +
+    public static final String strA = "Nome Consumidor fina1\n" +
             "    Fatura simplificada FS 130/126239\n" +
             "    Datat2015-07-23 Hora:21:54\n" +
             "    üt Artigo IV Tota1\n" +
@@ -34,7 +37,7 @@ public class ParsingTests extends InstrumentationTestCase {
             "    IVA incluido";
 
 
-    private static  final String strB = "Nome ---~~-~-A__-__.-__\"_,___~_,__-__\n" +
+    public static  final String strB = "Nome ---~~-~-A__-__.-__\"_,___~_,__-__\n" +
             "    N.C. 227179552\n" +
             "    Morada\n" +
             "    Fatura simplificada FS 008/544417\n" +
@@ -203,7 +206,7 @@ public class ParsingTests extends InstrumentationTestCase {
 
 
 
-        ArrayList<Line> lines = Line.linesFromString(strA);
+        ArrayList<Line> lines = Bill.linesFromString(strA, null);
 
         assertTrue(lines.size() == 1);
 
@@ -219,7 +222,7 @@ public class ParsingTests extends InstrumentationTestCase {
 
 
 
-        ArrayList<Line> lines = Line.linesFromString(strB);
+        ArrayList<Line> lines = Bill.linesFromString(strB,null);
 
         assertTrue(lines.size() == 2);
 
@@ -254,6 +257,23 @@ public class ParsingTests extends InstrumentationTestCase {
         assertTrue(Math.abs(l2.getPrice()- 0.70) < 0.0001);
         assertTrue(l2.getProductDescription().equals("SQPA"));
 */
+
+    }
+
+
+    public void testPDFParsing() throws Exception{
+
+
+        //Resources.getSystem().openRawResource(R.raw.encomenda);
+
+       InputStream is = this.getClass().getClassLoader().getResourceAsStream("assets/yorn.pdf");
+
+        // FileInputStream s = new FileInputStream(new File(R.raw.encomenda));
+        Bill b = new Bill(is);
+
+
+
+        assertTrue(b.getLines().length > 1);
 
     }
 }

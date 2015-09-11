@@ -10,6 +10,7 @@ public class Person implements Serializable{
     String name = "";
     String shortName = "";
 
+
     public Person() {
     }
 
