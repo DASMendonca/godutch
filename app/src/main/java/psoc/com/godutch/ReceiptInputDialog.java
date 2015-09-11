@@ -26,14 +26,12 @@ public class ReceiptInputDialog extends DialogFragment {
     private static int CAMERA_REQUEST_CODE = 0;
     private static int REQUEST_CODE_GALLERY = 1;
 
-    private static int OPTION_SELETED = -1;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        CharSequence items[] = {"Use Gallery", "Use Camera"/*, "Use PDF" */};
+        CharSequence items[] = {"Use Camera", "Use Gallery" /*, "Use PDF" */};
 
         builder.setTitle(R.string.bill_input)
                 .setItems(items, new DialogInterface.OnClickListener() {
@@ -47,15 +45,15 @@ public class ReceiptInputDialog extends DialogFragment {
                         Intent intent = null;
                         switch (which) {
                             case 0:
-                                intent = new Intent(Intent.ACTION_PICK,
-                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(intent, REQUEST_CODE_GALLERY);
-                                break;
-                            case 1:
                                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 if (intent.resolveActivity(context.getPackageManager()) != null) {
-                                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
-                                };
+                                    getActivity().startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                                }
+                                break;
+                            case 1:
+                                intent = new Intent(Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                getActivity().startActivityForResult(intent, REQUEST_CODE_GALLERY);
                                 break;
                             case 2:
                                 /*Intent getPDF = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -70,7 +68,6 @@ public class ReceiptInputDialog extends DialogFragment {
                         if (null != intent) {
 
 
-
                         }
 
 
@@ -81,26 +78,5 @@ public class ReceiptInputDialog extends DialogFragment {
         return builder.create();
     }
 
-    public int getOptionSeleted(){
-        return OPTION_SELETED;
-    }
-
-    /*protected void onPhotoSelected(Uri uri) {
-        Uri selectedImage = uri;
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-        Cursor cursor = getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
-
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-
-        Bitmap bill = BitmapFactory.decodeFile(picturePath);
-
-        onPhotoTaken(bill);
-
-    }*/
 
 }
