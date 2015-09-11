@@ -50,10 +50,11 @@ public class ReceiptInputDialog extends DialogFragment {
                         callback.selectFromGallery();
                     }
                 })
-        .setNeutralButton("Use Camera",  new DialogInterface.OnClickListener() {
+        .setPositiveButton("Use Camera",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 callback.selectFromCamera();
+
             }
         });
 
