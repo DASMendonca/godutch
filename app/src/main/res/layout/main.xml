@@ -61,4 +61,10 @@
         android:layout_height="wrap_content"
         android:hint="@string/text_hint" />
 
+
+    <com.joanzapata.pdfview.PDFView
+        android:id="@+id/pdfview"
+        android:layout_width="400dp"
+        android:layout_height="600dp"/>
+
 </LinearLayout>

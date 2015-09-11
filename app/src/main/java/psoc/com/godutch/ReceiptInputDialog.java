@@ -1,6 +1,7 @@
 package psoc.com.godutch;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,31 +24,34 @@ import psoc.com.godutch.model.Bill;
  */
 public class ReceiptInputDialog extends DialogFragment {
 
-    private static int OPTION_SELETED = -1;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+
         CharSequence items[] = {"Use Gallery", "Use Camera"/*, "Use PDF" */};
 
-        builder.setTitle(R.string.bill_input)
-                .setItems(items, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.bill_input);
+        builder.setItems(items,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
-                        OPTION_SELETED = which;
-                        notify();
-                        dialogInterface.cancel();
-                    }
-                });
+                if (which == 0) {
+
+                    ((Home) getActivity()).selectFromGallery();
+
+                }
+                else if (which == 1){
+
+                    ((Home) getActivity()).selectFromCamera();
+
+                }
+
+            }
+        });
+
 
         return builder.create();
-    }
-
-    public int getOptionSeleted(){
-        return OPTION_SELETED;
     }
 }
