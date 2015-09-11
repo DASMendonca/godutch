@@ -1,5 +1,6 @@
 package psoc.com.godutch;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,11 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bill);
+
+        //Custom Action Bar
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.actionbar);
 
         lineListView = (ListView) findViewById(R.id.billListView);
 

@@ -1,5 +1,6 @@
 package psoc.com.godutch;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -35,7 +36,7 @@ public class Home extends Activity {
 
 
     protected Button button;
-    private static int CAMERA_REQUEST_CODE = 0;
+    private static int REQUEST_CAMERA_CODE = 0;
     private static int REQUEST_CODE_GALLERY = 1;
     public final static Boolean DEBUG = true;
 
@@ -58,9 +59,11 @@ public class Home extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_home);
+
+        //Hide Action Bar
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
 
 
         TextView tv = (TextView) findViewById(R.id.appTitle);
@@ -109,7 +112,7 @@ public class Home extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        //getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
@@ -156,8 +159,11 @@ public class Home extends Activity {
 
 
     public void selectFromCamera() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
-        onPhotoTaken(bitmap);
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA_CODE);
+
     }
 
     public void selectFromPDF() {
@@ -195,7 +201,7 @@ public class Home extends Activity {
         recognizedText = recognizedText.trim();
 
         //DEBUG
-        recognizedText = ParsingTests.strA;
+        //recognizedText = ParsingTests.strA;
 
         Bill bill = new Bill(recognizedText);
         Intent billIntent = new Intent(this, BillActivity.class);
