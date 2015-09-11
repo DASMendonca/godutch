@@ -7,6 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -25,15 +32,42 @@ public class Bill extends Activity implements Serializable{
 
     ArrayList<Person> persons = new ArrayList<psoc.com.godutch.model.Person>();
 
-    public Bill(){}
+    public Bill(InputStream is){
+
+
+        PDFTextStripper pdfStripper = null;
+        PDDocument pdDoc = null;
+        COSDocument cosDoc = null;
+
+        try {
+            PDFParser parser = new PDFParser(is);
+            parser.parse();
+            cosDoc = parser.getDocument();
+            pdfStripper = new PDFTextStripper();
+            pdDoc = new PDDocument(cosDoc);
+            pdfStripper.setStartPage(1);
+            pdfStripper.setEndPage(5);
+            String parsedText = pdfStripper.getText(pdDoc);
+            this.buildFromString(parsedText);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
 
     public Bill(String s){
 
+        this.buildFromString(s);
+    }
+
+    private void buildFromString(String s){
+
         ArrayList<Line> lines = this.linesFromString(s,null);
-
         debugDefaultParams(lines);
-
         this.lines = lines.toArray(new Line[lines.size()]);
+
     }
 
     private void debugDefaultParams(ArrayList<Line> lines) {
