@@ -22,7 +22,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
     Activity activity;
     int mLayoutResourceId;
     Line[] lines = null;
-    ArrayList<Person> people = new ArrayList<>();
+    //ArrayList<Person> people = new ArrayList<>();
 
     public BillAdapter(Activity a, int resource, Line[] lines) {
         super(a, resource, lines);
@@ -32,14 +32,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         this.lines = lines;
 
 
-        Person person = new Person("Daniel M.", "dm");
-        this.people.add(person);
-        person = new Person("José M.", "jm");
-        this.people.add(person);
-        person = new Person("Rodolfo R.", "rr");
-        this.people.add(person);
-        person = new Person("Vitor M.", "vm");
-        this.people.add(person);
+
     }
 
 
@@ -60,9 +53,9 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
 
-            for (int i = 0; i < this.people.size() ; i++) {
+            for (int i = 0; i < this.lines[0].getBill().persons.size() ; i++) {
 
-                Person p = this.people.get(i);
+                Person p = this.lines[0].getBill().persons.get(i);
 
                 PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
 
@@ -76,22 +69,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
 
             }
-            for (Person p :
-                 this.people) {
 
-
-                //View toAdd =
-                //
-
-
-                //Setup here
-
-                //container.addView(toAdd);
-
-
-
-
-            }
 
         } else{
 
@@ -120,8 +98,5 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         return view;
     }
 
-    public void setPeople(ArrayList<Person> people) {
-        this.people = people;
-    }
 
 }

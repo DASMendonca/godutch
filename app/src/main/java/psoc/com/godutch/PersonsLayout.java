@@ -1,6 +1,8 @@
 package psoc.com.godutch;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.ShapeDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +20,9 @@ public class PersonsLayout extends FrameLayout{
     Button b;
     TextView counter;
     TextView nameView;
+    View mainButtonCircleView;
 
+    boolean inflated = false;
     private Line line;
 
     private Person person;
@@ -49,9 +53,16 @@ public class PersonsLayout extends FrameLayout{
 
         super.onFinishInflate();
 
+
         b = (Button) this.findViewById(R.id.button);
         counter = (TextView) this.findViewById(R.id.counter);
         nameView = (TextView) this.findViewById(R.id.nameLabel);
+        mainButtonCircleView = this.findViewById(R.id.mainButtonCircle);
+
+
+        inflated = true;
+
+        refreshViews();
 
         if(line != null && person != null && counter != null){
 
@@ -68,24 +79,7 @@ public class PersonsLayout extends FrameLayout{
 
                 line.addQuantity(person);
 
-                counter.setText(String.valueOf(line.quantityForPerson(person)));
-
-                if (line.quantityForPerson(person) == 0 ){
-
-                    counter.setVisibility(View.GONE);
-                    setBackgroundResource(R.drawable.button_circle_design_gray);
-
-                }
-                else{
-
-                    setBackgroundResource(R.drawable.button_circle_design_blue);
-                    counter.setVisibility(View.VISIBLE);
-
-                }
-                if(line.allPersonsHaveOneAsQuantity()){
-
-                    counter.setVisibility(View.GONE);
-                }
+                refreshViews();
 
 
 
@@ -106,9 +100,43 @@ public class PersonsLayout extends FrameLayout{
         });
     }
 
+    private void refreshViews() {
+
+
+        if(line != null && person != null && inflated){
+
+            counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+            if (line.quantityForPerson(person) == 0 ){
+
+                counter.setAlpha(0.0f);
+                mainButtonCircleView.setBackgroundResource(R.drawable.button_circle_design_gray);
+
+            }
+            else{
+
+
+                mainButtonCircleView.setBackgroundResource(R.drawable.button_circle_design_blue);
+                counter.setAlpha(1.0f);
+
+            }
+            if(line.allPersonsHaveOneAsQuantity()){
+
+                counter.setAlpha(0.0f);
+            }
+
+        }
+
+
+
+    }
 
     public void setPerson(Person person) {
         this.person = person;
+
+
+
+        refreshViews();
 
         if(line != null && person != null && counter != null){
 
@@ -125,6 +153,9 @@ public class PersonsLayout extends FrameLayout{
 
     public void setLine(Line line) {
         this.line = line;
+
+
+        refreshViews();
 
         if(line != null && person != null && counter != null){
 
