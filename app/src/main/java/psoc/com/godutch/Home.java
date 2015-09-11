@@ -13,9 +13,6 @@ import android.widget.TextView;
 
 public class Home extends Activity {
 
-    private static int CAMERA_REQUEST_CODE = 0;
-    private static int REQUEST_CODE_GALLERY = 1;
-
     protected Button button;
 
 
@@ -34,34 +31,6 @@ public class Home extends Activity {
             public void onClick(View v) {
                 ReceiptInputDialog dlg = new ReceiptInputDialog();
                 dlg.show(getFragmentManager(), "ola");
-
-
-                int opt = dlg.getOptionSeleted();
-
-                Intent intent = null;
-
-                switch (opt) {
-                    case 0:
-                        intent = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, REQUEST_CODE_GALLERY);
-                        break;
-                    case 1:
-                        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivityForResult(intent, CAMERA_REQUEST_CODE);
-                        };
-                        break;
-                    case 2:
-                                /*Intent getPDF = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (getPDF.resolveActivity(getContext().getPackageManager()) != null) {
-                                    startActivityForResult(getPDF, CAMERA_REQUEST_CODE);
-                                }*/
-                        break;
-                    default:
-                        break;
-                }
-
 
             }
         });

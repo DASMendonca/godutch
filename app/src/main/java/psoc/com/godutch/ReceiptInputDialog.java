@@ -23,6 +23,9 @@ import psoc.com.godutch.model.Bill;
  */
 public class ReceiptInputDialog extends DialogFragment {
 
+    private static int CAMERA_REQUEST_CODE = 0;
+    private static int REQUEST_CODE_GALLERY = 1;
+
     private static int OPTION_SELETED = -1;
 
     @Override
@@ -38,9 +41,40 @@ public class ReceiptInputDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        OPTION_SELETED = which;
-                        notify();
-                        dialogInterface.cancel();
+
+                        Dialog dialog  = (Dialog) dialogInterface;
+                        Context context = dialog.getContext();
+                        Intent intent = null;
+                        switch (which) {
+                            case 0:
+                                intent = new Intent(Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, REQUEST_CODE_GALLERY);
+                                break;
+                            case 1:
+                                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                                };
+                                break;
+                            case 2:
+                                /*Intent getPDF = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                if (getPDF.resolveActivity(getContext().getPackageManager()) != null) {
+                                    startActivityForResult(getPDF, CAMERA_REQUEST_CODE);
+                                }*/
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (null != intent) {
+
+
+
+                        }
+
+
+
                     }
                 });
 
@@ -50,4 +84,23 @@ public class ReceiptInputDialog extends DialogFragment {
     public int getOptionSeleted(){
         return OPTION_SELETED;
     }
+
+    /*protected void onPhotoSelected(Uri uri) {
+        Uri selectedImage = uri;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = getContentResolver().query(selectedImage,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        Bitmap bill = BitmapFactory.decodeFile(picturePath);
+
+        onPhotoTaken(bill);
+
+    }*/
+
 }
