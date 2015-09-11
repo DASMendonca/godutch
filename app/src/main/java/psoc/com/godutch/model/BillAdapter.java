@@ -1,28 +1,18 @@
 package psoc.com.godutch.model;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import psoc.com.godutch.PersonFragment;
 import psoc.com.godutch.PersonsLayout;
 import psoc.com.godutch.R;
-import psoc.com.godutch.model.Line;
-import psoc.com.godutch.model.Person;
 
 /**
  * Created by asmen on 09/09/2015.
@@ -76,7 +66,10 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
                 //View toAdd =
                 //
-                layoutInflater.inflate(R.layout.fragment_person, container, true);
+                PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, true);
+
+                layout.person = p;
+
                 //Setup here
 
                 //container.addView(toAdd);
