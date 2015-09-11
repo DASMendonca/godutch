@@ -2,6 +2,7 @@ package psoc.com.godutch;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,11 +12,12 @@ import android.widget.ListView;
 import psoc.com.godutch.R;
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.BillAdapter;
+import psoc.com.godutch.model.Line;
 
 /**
  * Created by asmen on 10/09/2015.
  */
-public class BillActivity extends Activity {
+public class BillActivity extends Activity implements PersonFragment.OnFragmentInteractionListener {
 
     public static final String INTENT_KEY_BILL_LINES = "billLinesKey";
     public static final String INTENT_KEY_BILL = "billKey";
@@ -26,7 +28,9 @@ public class BillActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_bill);
 
         //Custom Action Bar
@@ -38,9 +42,26 @@ public class BillActivity extends Activity {
 
         setBill();
 
-        if (bill != null && bill.getLines() != null) {
-            billAdapter = new BillAdapter(getApplicationContext(), R.layout.bill_line, bill.getLines());
-            billAdapter.setPeople(bill.getPersons());
+        if (bill != null) {
+
+
+            Line[] l = bill.getLines();
+
+            if(l.length == 1){
+
+
+                Line[] newArray = new Line[2];
+                newArray[0] = l[0];
+                newArray[1] = new Line();
+                newArray[1].setPrice(10.0f);
+                newArray[1].setProductDescription("Ola");
+
+                l = newArray;
+            }
+
+
+            billAdapter = new BillAdapter(this, R.layout.bill_line, l);
+            //billAdapter.setPeople(bill.getPersons());
 
             if (lineListView != null) {
                 lineListView.setAdapter(billAdapter);
@@ -75,5 +96,12 @@ public class BillActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+
+
     }
 }

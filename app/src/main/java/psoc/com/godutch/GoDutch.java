@@ -27,9 +27,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnDrawListener;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.BillActivity;
@@ -154,52 +151,6 @@ public class GoDutch extends Activity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-
-        com.joanzapata.pdfview.PDFView pdfView = (com.joanzapata.pdfview.PDFView) findViewById(R.id.pdfview);
-
-       // pdfView.setDrawingCacheEnabled(true);
-
-       // pdfView.buildDrawingCache();
-
-
-        pdfView.fromAsset("dan.pdf")
-                .pages(0)
-                .defaultPage(0)
-                .showMinimap(false)
-                .enableSwipe(true).onLoad(new OnLoadCompleteListener() {
-                    @Override
-                    public void loadComplete(int i) {
-
-
-                     }
-                }).load();
-
-
-
-
-        pdfView.layout(0,0,400,600);
-
-        Bitmap b = Bitmap.createBitmap(pdfView.getWidth(),
-                pdfView.getHeight(),
-                Bitmap.Config.ARGB_8888);
-
-
-
-        Canvas c = new Canvas(b);
-        pdfView.draw(c);
-
-        Bill bill = new Bill(b);
-
-
-
-
-
-    }
 
     private void prepareOCRForTess() {
         if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {

@@ -13,14 +13,7 @@ import android.widget.ListView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
-import org.apache.pdfbox.cos.COSDocument;
-import org.apache.pdfbox.io.IOUtils;
-import org.apache.pdfbox.pdfparser.PDFParser;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.rendering.PDFRenderer;
-import org.apache.pdfbox.text.PDFTextStripper;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -40,11 +33,10 @@ import psoc.com.godutch.parsing.LineWithPriceFilter;
 import psoc.com.godutch.parsing.O_ReplacerFilter;
 
 
-import com.joanzapata.pdfview.*;
 
 public class Bill implements Serializable{
 
-    Line[] lines;
+    Line[] lines = new Line[0];
 
     ArrayList<Person> persons = new ArrayList<Person>();
 
@@ -64,51 +56,8 @@ public class Bill implements Serializable{
 
     public Bill(InputStream is){
 
-        try {
 
 
-            /*
-            PDFView pdfView = new PDFView();
-            pdfView.fromAsset("dan.pdf")
-                    .pages(0, 2, 1, 3, 3, 3)
-                    .defaultPage(1)
-                    .showMinimap(false)
-                    .enableSwipe(true)
-                    .load();*/
-            /*
-            PDFFile f = new PDFFile(ByteBuffer.wrap(IOUtils.toByteArray(is)));
-
-            PDFPage page = f.getPage(0);
-
-            float wi = page.getWidth();
-            float hei = page.getHeight();
-
-            RectF clip = null;
-
-            Bitmap bi = page.getImage((int) (wi * 1.25), (int) (hei * 1.25), clip);
-
-*/
-
-            PDDocument pdf = PDDocument.load(is, true);
-
-            PDFRenderer renderer = new PDFRenderer(pdf);
-
-            Bitmap bm = renderer.renderImage(0);
-
-            //Bitmap bm = renderer.renderImage(0,(float)0.5, Bitmap.Config.RGB_565);
-
-            TessBaseAPI baseApi = new TessBaseAPI();
-            baseApi.setDebug(true);
-            baseApi.init(GoDutch.DATA_PATH, GoDutch.lang);
-            baseApi.setImage(bm);
-
-            String parsedText = baseApi.getUTF8Text();
-
-            this.buildFromString(parsedText);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
 
     }
@@ -116,6 +65,7 @@ public class Bill implements Serializable{
     public Bill(String s){
 
         this.buildFromString(s);
+        //this.debugDefaultParams();
     }
 
     private void buildFromString(String s){
@@ -129,6 +79,7 @@ public class Bill implements Serializable{
     private void debugDefaultParams(ArrayList<Line> lines) {
         if(GoDutch.DEBUG){
             Line line = new Line();
+            line.parent_bill = this;
             line.price = 4.5f;
             line.productDescription = "Example 1";
             lines.add(line);
