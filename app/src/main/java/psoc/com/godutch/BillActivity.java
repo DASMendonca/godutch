@@ -46,9 +46,7 @@ public class BillActivity extends Activity {
 
         setBill();
 
-        if (bill != null && bill.getLines() != null) {
-            billAdapter = new BillAdapter(getApplicationContext(), R.layout.bill_line, bill.getLines());
-            billAdapter.setPeople(bill.getPersons());
+        if (bill != null) {
 
 
             Line[] l = bill.getLines();
@@ -116,12 +114,6 @@ public class BillActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-
-
-    }
 
     public void addPersons(ArrayList<Integer> personsID) {
         bill.getPersons().clear();
