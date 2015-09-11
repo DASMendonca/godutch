@@ -76,6 +76,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
 
 
+
             }
 
         } else{

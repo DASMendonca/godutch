@@ -22,7 +22,7 @@ public class PersonsLayout extends FrameLayout{
 
     public Line line;
 
-    public Person persons;
+    public Person person;
 
 
     public PersonsLayout(Context context) {
