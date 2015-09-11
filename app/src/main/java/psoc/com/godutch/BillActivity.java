@@ -9,10 +9,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.List;
+
 import psoc.com.godutch.R;
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.BillAdapter;
 import psoc.com.godutch.model.Line;
+import psoc.com.godutch.model.Person;
+import psoc.com.godutch.model.TotalAdapter;
 
 /**
  * Created by asmen on 10/09/2015.
@@ -23,7 +27,9 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     public static final String INTENT_KEY_BILL = "billKey";
 
     private ListView lineListView;
+    private ListView totalsListView;
     private BillAdapter billAdapter;
+    private TotalAdapter totalAdapter;
     Bill bill = null;
 
     @Override
@@ -39,6 +45,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         actionBar.setCustomView(R.layout.actionbar);
 
         lineListView = (ListView) findViewById(R.id.billListView);
+        totalsListView = (ListView) findViewById(R.id.peopleTotals);
 
         setBill();
 
@@ -61,11 +68,17 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, l);
-            //billAdapter.setPeople(bill.getPersons());
+            totalAdapter = new TotalAdapter(this,R.layout.person_total,
+                    bill.getPersons().toArray( new Person[bill.getPersons().size()]
+            ));
 
+            //billAdapter.setPeople(bill.getPersons());
             if (lineListView != null) {
                 lineListView.setAdapter(billAdapter);
             }
+
+            if(totalsListView != null)
+                totalsListView.setAdapter(totalAdapter);
         }
 
     }
