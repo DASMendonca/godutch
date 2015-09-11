@@ -166,8 +166,10 @@ public class Home extends Activity {
 
     }
 
-    public void selectFromPDF() {
+    public void selectTest() {
 
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
+        onPhotoTaken(bitmap);
     }
 
 
@@ -201,7 +203,7 @@ public class Home extends Activity {
         recognizedText = recognizedText.trim();
 
         //DEBUG
-        //recognizedText = ParsingTests.strA;
+        recognizedText = ParsingTests.strA;
 
         Bill bill = new Bill(recognizedText);
         Intent billIntent = new Intent(this, BillActivity.class);

@@ -60,17 +60,28 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
 
+            for (int i = 0; i < this.people.size() ; i++) {
+
+                Person p = this.people.get(i);
+
+                PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
+
+                layout.person = p;
+                layout.line = this.lines[position];
+
+                container.addView(layout);
+
+
+
+
+
+            }
             for (Person p :
                  this.people) {
 
 
                 //View toAdd =
                 //
-                PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, true);
-
-                layout.person = p;
-                layout.line = this.lines[position];
-
 
 
                 //Setup here
