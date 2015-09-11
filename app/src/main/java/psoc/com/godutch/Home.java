@@ -1,5 +1,6 @@
 package psoc.com.godutch;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,10 @@ public class Home extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //Hide ActionBar
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
 
         TextView tv = (TextView) findViewById(R.id.appTitle);
         int height_in_pixels = tv.getLineCount() * tv.getLineHeight(); //approx height text
@@ -50,7 +55,8 @@ public class Home extends Activity {
                         intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         if (intent.resolveActivity(getPackageManager()) != null) {
                             startActivityForResult(intent, CAMERA_REQUEST_CODE);
-                        };
+                        }
+                        ;
                         break;
                     case 2:
                                 /*Intent getPDF = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -68,12 +74,12 @@ public class Home extends Activity {
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
