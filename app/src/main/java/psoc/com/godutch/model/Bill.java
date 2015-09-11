@@ -7,6 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -27,12 +36,39 @@ public class Bill extends Activity implements Serializable{
 
     public Bill(String s){
 
-        ArrayList<Line> lines = this.linesFromString(s,null);
-
-        this.lines = lines.toArray(new Line[lines.size()]);
+       this.loadFromString(s);
 
     }
 
+
+    public Bill(InputStream stream){
+        PDFTextStripper pdfStripper = null;
+        PDDocument pdDoc = null;
+        COSDocument cosDoc = null;
+        try {
+            PDFParser parser = new PDFParser(stream);
+            parser.parse();
+            cosDoc = parser.getDocument();
+            pdfStripper = new PDFTextStripper();
+            pdDoc = new PDDocument(cosDoc);
+            pdfStripper.setStartPage(1);
+            pdfStripper.setEndPage(5);
+            String parsedText = pdfStripper.getText(pdDoc);
+            this.loadFromString(parsedText);
+            System.out.println(parsedText);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadFromString(String s){
+
+        ArrayList<Line> lines = this.linesFromString(s,null);
+
+        this.lines = lines.toArray(new Line[lines.size()]);
+    }
 
     public void addPerson(psoc.com.godutch.model.Person p){
 
@@ -91,9 +127,15 @@ public class Bill extends Activity implements Serializable{
     public Person[] getPersons(){
 
         return persons.toArray(new Person[persons.size()]);
+
+
     }
 
 
+    public Line[] getLines(){
+
+        return lines;
+    }
 
 
     public static ArrayList<Line> linesFromString(String inputString,Bill bill){

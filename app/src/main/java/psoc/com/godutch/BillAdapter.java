@@ -67,8 +67,6 @@ public class BillAdapter extends ArrayAdapter<Line> {
             button.setLayoutParams(layoutParams);
         }
 
-
-
         return row;
     }
 }

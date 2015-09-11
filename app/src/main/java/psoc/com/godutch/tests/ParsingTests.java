@@ -1,7 +1,9 @@
 package psoc.com.godutch.tests;
 
+import android.content.res.Resources;
 import android.test.InstrumentationTestCase;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import psoc.com.godutch.model.Bill;
@@ -255,6 +257,23 @@ public class ParsingTests extends InstrumentationTestCase {
         assertTrue(Math.abs(l2.getPrice()- 0.70) < 0.0001);
         assertTrue(l2.getProductDescription().equals("SQPA"));
 */
+
+    }
+
+
+    public void testPDFParsing() throws Exception{
+
+
+        //Resources.getSystem().openRawResource(R.raw.encomenda);
+
+       InputStream is = this.getClass().getClassLoader().getResourceAsStream("assets/yorn.pdf");
+
+        // FileInputStream s = new FileInputStream(new File(R.raw.encomenda));
+        Bill b = new Bill(is);
+
+
+
+        assertTrue(b.getLines().length > 1);
 
     }
 }
