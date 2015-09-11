@@ -16,7 +16,7 @@
 
 
     <View
-        android:alpha="0.2"
+        android:alpha="1.0"
         android:id="@+id/mainButtonCircle"
         android:background="@drawable/button_circle_design_gray"
         android:layout_width="fill_parent"
@@ -30,7 +30,7 @@
 
 
     <TextView
-        android:background="@drawable/button_circle_design_gray"
+        android:background="@drawable/button_circle_design_blue"
         android:textColor="@color/go_dutch_white"
         android:id="@+id/counter"
         android:layout_width="20dp"

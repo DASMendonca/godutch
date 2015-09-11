@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import psoc.com.godutch.model.Bill;
+import psoc.com.godutch.model.Person;
 import psoc.com.godutch.tests.ParsingTests;
 
 
@@ -176,36 +177,17 @@ public class Home extends Activity {
     protected void onPhotoTaken(Bitmap bitmap) {
         _taken = true;
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 4;
+        Bill bill = new Bill(bitmap);
 
-        Log.v(TAG, "Before baseApi");
+        Person person = new Person("Daniel M.", "dm");
+       bill.addPerson(person);
+        person = new Person("José M.", "jm");
+       bill.addPerson(person);
+        person = new Person("Rodolfo R.", "rr");
+        bill.addPerson(person);
+        person = new Person("Vitor M.", "vm");
+       bill.addPerson(person);
 
-        TessBaseAPI baseApi = new TessBaseAPI();
-        baseApi.setDebug(true);
-        baseApi.init(DATA_PATH, lang);
-        baseApi.setImage(bitmap);
-
-        String recognizedText = baseApi.getUTF8Text();
-
-        baseApi.end();
-
-        // You now have the text in recognizedText var, you can do anything with it.
-        // We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
-        // so that garbage doesn't make it to the display.
-
-        Log.v(TAG, "OCRED TEXT: " + recognizedText);
-
-        if (lang.equalsIgnoreCase("eng")) {
-            recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
-        }
-
-        recognizedText = recognizedText.trim();
-
-        //DEBUG
-        recognizedText = ParsingTests.strA;
-
-        Bill bill = new Bill(recognizedText);
         Intent billIntent = new Intent(this, BillActivity.class);
         Bundle extras = new Bundle();
         extras.putSerializable(BillActivity.INTENT_KEY_BILL, bill);
