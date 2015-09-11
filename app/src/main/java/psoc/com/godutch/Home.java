@@ -36,7 +36,7 @@ public class Home extends Activity {
 
 
     protected Button button;
-    private static int CAMERA_REQUEST_CODE = 0;
+    private static int REQUEST_CAMERA_CODE = 0;
     private static int REQUEST_CODE_GALLERY = 1;
     public final static Boolean DEBUG = true;
 
@@ -159,8 +159,11 @@ public class Home extends Activity {
 
 
     public void selectFromCamera() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
-        onPhotoTaken(bitmap);
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA_CODE);
+
     }
 
     public void selectFromPDF() {
@@ -198,7 +201,7 @@ public class Home extends Activity {
         recognizedText = recognizedText.trim();
 
         //DEBUG
-        recognizedText = ParsingTests.strA;
+        //recognizedText = ParsingTests.strA;
 
         Bill bill = new Bill(recognizedText);
         Intent billIntent = new Intent(this, BillActivity.class);
