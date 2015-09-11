@@ -18,7 +18,7 @@ import psoc.com.godutch.parsing.O_ReplacerFilter;
 public class ParsingTests extends InstrumentationTestCase {
 
 
-    private static final String strA = "Nome Consumidor fina1\n" +
+    public static final String strA = "Nome Consumidor fina1\n" +
             "    Fatura simplificada FS 130/126239\n" +
             "    Datat2015-07-23 Hora:21:54\n" +
             "    üt Artigo IV Tota1\n" +
@@ -35,7 +35,7 @@ public class ParsingTests extends InstrumentationTestCase {
             "    IVA incluido";
 
 
-    private static  final String strB = "Nome ---~~-~-A__-__.-__\"_,___~_,__-__\n" +
+    public static  final String strB = "Nome ---~~-~-A__-__.-__\"_,___~_,__-__\n" +
             "    N.C. 227179552\n" +
             "    Morada\n" +
             "    Fatura simplificada FS 008/544417\n" +
