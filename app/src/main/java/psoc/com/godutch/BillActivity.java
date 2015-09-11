@@ -1,12 +1,15 @@
-package psoc.com.godutch.model;
+package psoc.com.godutch;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import psoc.com.godutch.R;
+import psoc.com.godutch.model.Bill;
+import psoc.com.godutch.model.BillAdapter;
 
 /**
  * Created by asmen on 10/09/2015.
@@ -29,7 +32,7 @@ public class BillActivity extends Activity {
 
         setBill();
 
-        if (bill != null && bill.lines != null) {
+        if (bill != null && bill.getLines() != null) {
             billAdapter = new BillAdapter(getApplicationContext(), R.layout.bill_line, bill.getLines());
             billAdapter.setPeople(bill.getPersons());
 
@@ -48,8 +51,9 @@ public class BillActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_bill, menu);
-        return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_bill, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

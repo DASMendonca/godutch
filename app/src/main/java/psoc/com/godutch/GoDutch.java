@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import psoc.com.godutch.model.Bill;
-import psoc.com.godutch.model.BillActivity;
+import psoc.com.godutch.BillActivity;
 import psoc.com.godutch.tests.ParsingTests;
 
 public class GoDutch extends Activity {
