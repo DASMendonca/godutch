@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import psoc.com.godutch.R;
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.BillAdapter;
+import psoc.com.godutch.model.Person;
 
 /**
  * Created by asmen on 10/09/2015.
@@ -56,10 +60,22 @@ public class BillActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bill, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        MenuItem btn = (MenuItem) menu.findItem(R.id.action_search);
+        btn.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                AddPersonDialog dlg = new AddPersonDialog();
+                dlg.show(getFragmentManager(), "Person");
+                return true;
+            }
+        });
+
+        return true;
     }
 
     @Override
@@ -76,4 +92,32 @@ public class BillActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void addPersons(ArrayList<Integer> personsID) {
+        bill.getPersons().clear();
+
+        Person person = null;
+        for (Integer id: personsID) {
+            switch (id) {
+                case 0:
+                    person = new Person("Daniel M.", "dm");
+                    bill.addPerson(person);
+                    break;
+                case 1:
+                    person = new Person("Daniel M.", "dm");
+                    bill.addPerson(person);
+                    break;
+                case 2:
+                    person = new Person("Daniel M.", "dm");
+                    bill.addPerson(person);
+                    break;
+                case 3:
+                    person = new Person("Daniel M.", "dm");
+                    bill.addPerson(person);
+                    break;
+            }
+            
+        }
+    }
+
 }
