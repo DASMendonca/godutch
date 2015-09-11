@@ -68,9 +68,6 @@ public class Line implements Serializable{
         }
 
     }
-    public Line(){}
-
-
 
     public String getProductDescription(){
 
@@ -90,29 +87,8 @@ public class Line implements Serializable{
 
         return parent_bill;
     }
-/*
-    public Line(ArrayList<Person> persons, float price, String productName) {
-        this.persons = persons;
-        this.price = price;
-        this.productDescription = productName;
-    }
-
-    */
-    /*
-    public Line(float price, String productName) {
-        this.price = price;
-        this.productDescription = productName;
-    }
-    */
-/*
-    public ArrayList<Person> getPersons() {
-        return persons;
-    }
-    */
-
 
     //Setters
-
 
     public void setPrice(float price) {
         this.price = price;
@@ -199,4 +175,20 @@ public class Line implements Serializable{
         return 0;
 
     }
+
+    public boolean allPersonsHaveOneAsQuantity(){
+
+
+        for (Person person : parent_bill.persons) {
+
+            if (quantityForPerson(person) != 1){
+
+                    return false;
+            }
+        }
+
+        return true;
+
+    }
+
 }

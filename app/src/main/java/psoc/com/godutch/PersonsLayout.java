@@ -1,16 +1,13 @@
 package psoc.com.godutch;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.model.Person;
 
@@ -20,10 +17,11 @@ public class PersonsLayout extends FrameLayout{
 
     Button b;
     TextView counter;
+    TextView nameView;
 
-    public Line line;
+    private Line line;
 
-    public Person person;
+    private Person person;
 
 
     public PersonsLayout(Context context) {
@@ -48,10 +46,12 @@ public class PersonsLayout extends FrameLayout{
 
     @Override
     protected void onFinishInflate() {
+
         super.onFinishInflate();
 
         b = (Button) this.findViewById(R.id.button);
         counter = (TextView) this.findViewById(R.id.counter);
+        nameView = (TextView) this.findViewById(R.id.nameLabel);
 
         if(line != null && person != null && counter != null){
 
@@ -59,13 +59,37 @@ public class PersonsLayout extends FrameLayout{
 
         }
 
+
         b.setOnClickListener(new OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
 
                 line.addQuantity(person);
 
                 counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+                if (line.quantityForPerson(person) == 0 ){
+
+                    counter.setVisibility(View.GONE);
+                    setBackgroundResource(R.drawable.button_circle_design_gray);
+
+                }
+                else{
+
+                    setBackgroundResource(R.drawable.button_circle_design_blue);
+                    counter.setVisibility(View.VISIBLE);
+
+                }
+                if(line.allPersonsHaveOneAsQuantity()){
+
+                    counter.setVisibility(View.GONE);
+                }
+
+
+
+
 
 
 
@@ -89,6 +113,12 @@ public class PersonsLayout extends FrameLayout{
         if(line != null && person != null && counter != null){
 
             counter.setText(String.valueOf(line.quantityForPerson(person)));
+
+        }
+
+        if(this.nameView != null){
+
+            nameView.setText(person.getShortName());
 
         }
     }
