@@ -32,6 +32,7 @@
             android:textColor="@color/go_dutch_grey"
             android:textSize="20dp"
             />
+
         <TextView
             android:layout_weight="1"
             android:layout_gravity="right"

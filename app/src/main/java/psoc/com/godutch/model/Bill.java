@@ -65,7 +65,7 @@ public class Bill implements Serializable{
             recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
         }
 
-        recognizedText = recognizedText.trim();
+        //recognizedText = recognizedText.trim();
 
         this.buildFromString(recognizedText);
     }
@@ -144,6 +144,15 @@ public class Bill implements Serializable{
 
         ArrayList<String> input = new ArrayList<>();
         input.add(inputString);
+
+
+        ArrayList<String> a = f1.filter(input);
+        ArrayList<String> b = f2.filter(a);
+        ArrayList<String> c = f3.filter(b);
+        ArrayList<String> d = f4.filter(c);
+        ArrayList<String> e = f5.filter(d);
+
+
         ArrayList<String> output = f5.filter(f4.filter(f3.filter(f2.filter(f1.filter(input)))));
 
         ArrayList<Line> lines = new ArrayList<>();
