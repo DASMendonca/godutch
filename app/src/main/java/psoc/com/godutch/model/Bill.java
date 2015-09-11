@@ -47,20 +47,11 @@ public class Bill implements Serializable{
         baseApi.setDebug(true);
         baseApi.init(GoDutch.DATA_PATH, GoDutch.lang);
         baseApi.setImage(bm);
-
         String parsedText = baseApi.getUTF8Text();
-
         this.buildFromString(parsedText);
-
     }
 
-    public Bill(InputStream is){
 
-
-
-
-
-    }
 
     public Bill(String s){
 
@@ -74,31 +65,6 @@ public class Bill implements Serializable{
         //debugDefaultParams(lines);
         this.lines = lines.toArray(new Line[lines.size()]);
 
-    }
-
-    private void debugDefaultParams(ArrayList<Line> lines) {
-        if(GoDutch.DEBUG){
-            Line line = new Line();
-            line.parent_bill = this;
-            line.price = 4.5f;
-            line.productDescription = "Example 1";
-            lines.add(line);
-
-            line = new Line();
-            line.price = 10.5f;
-            line.productDescription = "Example 2";
-            lines.add(line);
-
-            Person person = new Person("Daniel M.", "dm");
-            this.addPerson(person);
-            person = new Person("José M.", "jm");
-            this.addPerson(person);
-            person = new Person("Rodolfo R.", "rr");
-            this.addPerson(person);
-            person = new Person("Vitor M.", "vm");
-            this.addPerson(person);
-
-        }
     }
 
     public Bill(Line[] lines){

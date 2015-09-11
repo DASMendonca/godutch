@@ -31,6 +31,7 @@ public class Line implements Serializable{
 
         parent_bill = parent;
 
+
         Pattern numberPattern = Pattern.compile("^.*?(\\d+[\\.,]\\d{2}).*?$");
 
         Matcher numberMatcher = numberPattern.matcher(input);
@@ -97,8 +98,6 @@ public class Line implements Serializable{
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
     }
-
-
 
     public void addQuantity(Person p){
 
