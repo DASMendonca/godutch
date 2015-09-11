@@ -24,10 +24,15 @@ import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import psoc.com.godutch.model.Bill;
+import psoc.com.godutch.BillActivity;
+import psoc.com.godutch.tests.ParsingTests;
+
 public class GoDutch extends Activity {
 
     private static int CAMERA_REQUEST_CODE = 0;
     private static int REQUEST_CODE_GALLERY = 1;
+    public final static Boolean DEBUG = true;
 
 
     public static final String PACKAGE_NAME = "psoc.com.godutch";
@@ -71,31 +76,7 @@ public class GoDutch extends Activity {
         // You can get them at:
         // http://code.google.com/p/tesseract-ocr/downloads/list
         // This area needs work and optimization
-        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
-            try {
-
-                AssetManager assetManager = getAssets();
-                InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
-                //GZIPInputStream gin = new GZIPInputStream(in);
-                OutputStream out = new FileOutputStream(DATA_PATH
-                        + "tessdata/" + lang + ".traineddata");
-
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                //while ((lenf = gin.read(buff)) > 0) {
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-                in.close();
-                //gin.close();
-                out.close();
-
-                Log.v(TAG, "Copied " + lang + " traineddata");
-            } catch (IOException e) {
-                Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
-            }
-        }
+        prepareOCRForTess();
 
         super.onCreate(savedInstanceState);
 
@@ -154,6 +135,34 @@ public class GoDutch extends Activity {
         });
 
         _path = DATA_PATH + "/ocr.jpg";
+    }
+
+    private void prepareOCRForTess() {
+        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
+            try {
+
+                AssetManager assetManager = getAssets();
+                InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
+                //GZIPInputStream gin = new GZIPInputStream(in);
+                OutputStream out = new FileOutputStream(DATA_PATH
+                        + "tessdata/" + lang + ".traineddata");
+
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                //while ((lenf = gin.read(buff)) > 0) {
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                //gin.close();
+                out.close();
+
+                Log.v(TAG, "Copied " + lang + " traineddata");
+            } catch (IOException e) {
+                Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
+            }
+        }
     }
 
     private void startOCRFromGallery() {
@@ -244,11 +253,24 @@ public class GoDutch extends Activity {
 
         recognizedText = recognizedText.trim();
 
-        if (recognizedText.length() != 0) {
+        //DEBUG
+        recognizedText = ParsingTests.strA;
+
+        Bill bill = new Bill(recognizedText);
+        Intent billIntent = new Intent(this, BillActivity.class);
+        Bundle extras = new Bundle();
+        extras.putSerializable(BillActivity.INTENT_KEY_BILL, bill);
+
+        billIntent.putExtras(extras);
+
+
+        //activity
+        /*if (recognizedText.length() != 0) {
             field.setText(field.getText().toString().length() == 0 ? recognizedText : field.getText() + " " + recognizedText);
             field.setSelection(field.getText().toString().length());
-        }
+        }*/
 
+        startActivity(billIntent);
         // Cycle done.
     }
 

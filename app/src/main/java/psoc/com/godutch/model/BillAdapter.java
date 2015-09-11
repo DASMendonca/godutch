@@ -1,26 +1,32 @@
-package psoc.com.godutch;
+package psoc.com.godutch.model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import psoc.com.godutch.R;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.model.Person;
 
 /**
  * Created by asmen on 09/09/2015.
  */
-public class BillAdapter extends ArrayAdapter<Line> {
+public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
     Context mContext;
     int mLayoutResourceId;
     Line[] lines = null;
+    ArrayList<Person> people = new ArrayList<>();
 
     public BillAdapter(Context context, int resource, Line[] lines) {
         super(context, resource, lines);
@@ -53,22 +59,29 @@ public class BillAdapter extends ArrayAdapter<Line> {
         productDescription.setText(line.getProductDescription());
         productPrice.setText(String.valueOf(line.getPrice()));
 
-       // FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-         //       mContext.getLayoutParams().WRAP_CONTENT, mContext.getLayoutParams().WRAP_CONTENT);
+        LinearLayout dummyLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.bill_person_button, null);
+        Button dummyButton = (Button) dummyLinearLayout.findViewById(R.id.bill_person_button);
 
-        //using this layoutParams instead just for testing purposes
-         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(30, 30);
-
-        //add the people that are set to share this bill
-        for(Person person : line.getPersons()){
-            Button button = new Button(people.getContext()); //not sure if it is the right context
-            button.setBackgroundResource(R.drawable.button_circle_design);
-            button.setText(person.getShortName());
-            button.setLayoutParams(layoutParams);
+        //as the dimension values for this button are in dp, we inflate a dummy and git its pixels
+        //for the device in usage
+        for(int i = 0; i< this.people.size(); i++){
+            Button btn = new Button(people.getContext());
+            Person person = this.people.get(i);
+            btn.setLayoutParams(dummyButton.getLayoutParams());
+            btn.setText(person.getShortName());
+            btn.setId(i);
+            btn.setBackgroundResource(R.drawable.button_circle_design);
+            people.addView(btn);
         }
 
+        dummyLinearLayout.removeAllViewsInLayout();
 
 
         return row;
     }
+
+    public void setPeople(ArrayList<Person> people) {
+        this.people = people;
+    }
+
 }
