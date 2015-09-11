@@ -31,7 +31,7 @@ import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.tests.ParsingTests;
 
 
-public class Home extends Activity implements DialogClickListener{
+public class Home extends Activity {
 
 
     protected Button button;
@@ -58,7 +58,10 @@ public class Home extends Activity implements DialogClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_home);
+
 
         TextView tv = (TextView) findViewById(R.id.appTitle);
         int height_in_pixels = tv.getLineCount() * tv.getLineHeight(); //approx height text
@@ -143,20 +146,20 @@ public class Home extends Activity implements DialogClickListener{
             }
     }
 
-    @Override
+
+
     public void selectFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_CODE_GALLERY);
     }
 
-    @Override
+
     public void selectFromCamera() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
         onPhotoTaken(bitmap);
     }
 
-    @Override
     public void selectFromPDF() {
 
     }

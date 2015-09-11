@@ -22,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
             android:text="goDutch"
             android:gravity="center"
             android:id="@+id/appTitle"
@@ -71,6 +72,7 @@
                 android:layout_height="fill_parent"
                 android:textAllCaps="false"
                 android:text="New Bill"
+                android:fontFamily="sans-serif"
                 android:id="@+id/btn_new_bill"
                 android:drawableRight="@drawable/ic_add_circle_outline_black_48dp"
                 android:drawablePadding="10dp"
@@ -84,6 +86,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
+            android:alpha="0.5"
             android:background="#616161"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp" />
@@ -100,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAllCaps="false"
+                android:fontFamily="sans-serif"
                 android:text="My Bills"
                 android:id="@+id/btn_my_bills"
                 android:drawableRight="@drawable/ic_receipt_black_48dp"

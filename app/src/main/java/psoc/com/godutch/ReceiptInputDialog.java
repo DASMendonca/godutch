@@ -24,39 +24,33 @@ import psoc.com.godutch.model.Bill;
  */
 public class ReceiptInputDialog extends DialogFragment {
 
-    private DialogClickListener callback;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            callback = (DialogClickListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onViewSelected");
-        }
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+
         CharSequence items[] = {"Use Gallery", "Use Camera"/*, "Use PDF" */};
 
-        builder.setTitle(R.string.bill_input)
-                .setNeutralButton("Use gallery", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.selectFromGallery();
-                    }
-                })
-        .setPositiveButton("Use Camera",  new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.bill_input);
+        builder.setItems(items,new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                callback.selectFromCamera();
+
+                if (which == 0) {
+
+                    ((Home) getActivity()).selectFromGallery();
+
+                }
+                else if (which == 1){
+
+                    ((Home) getActivity()).selectFromCamera();
+
+                }
 
             }
         });
+
 
         return builder.create();
     }
