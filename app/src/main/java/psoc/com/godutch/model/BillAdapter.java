@@ -1,16 +1,26 @@
 package psoc.com.godutch.model;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import psoc.com.godutch.BillActivity;
 import psoc.com.godutch.PersonsLayout;
 import psoc.com.godutch.R;
 
@@ -45,7 +55,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view;
 
         if (convertView == null) {
@@ -68,9 +78,6 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
                 container.addView(layout);
 
 
-
-
-
             }
 
 
@@ -82,24 +89,61 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
         Line line = getItem(position);
 
-
         //get a reference to different view elements we wish to update
-        TextView productDescription = (TextView) view.findViewById(R.id.productDescription);
-        TextView productPrice = (TextView) view.findViewById(R.id.rowPrice);
-        LinearLayout people = (LinearLayout) view.findViewById(R.id.peopleLayout);
+        //TextView productDescription = (TextView) view.findViewById(R.id.productDescription);
+        EditText productDescription = (EditText) view.findViewById(R.id.productDescription);
+        //TextView productPrice = (TextView) view.findViewById(R.id.rowPrice);
+        EditText productPrice = (EditText) view.findViewById(R.id.rowPrice);
+
+        //LinearLayout people = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
         productDescription.setText(line.getProductDescription());
         productPrice.setText(String.valueOf(line.getPrice()));
 
         // Update the layout
 
+        //Edit product description field listener
+        productDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newText = s.toString();
+                bill.getLines().get(position).setProductDescription(newText);
+                ListView billListView = (ListView) activity.findViewById(R.id.billListView);
+            }
+        });
+
+        //Edit price field listener
+        productPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newText = s.toString();
+                bill.getLines().get(position).setPrice(Float.parseFloat(newText));
+                ListView billListView = (ListView) activity.findViewById(R.id.billListView);
+            }
+        });
 
 
         return view;
     }
-
 
 }
