@@ -126,7 +126,6 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             public void afterTextChanged(Editable s) {
                 String newText = s.toString();
                 bill.getLines().get(position).setProductDescription(newText);
-                ListView billListView = (ListView) activity.findViewById(R.id.billListView);
             }
         };
 
@@ -145,15 +144,20 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             public void afterTextChanged(Editable s) {
                 String newText = s.toString();
                 bill.getLines().get(position).setPrice(Float.parseFloat(newText));
-                ListView billListView = (ListView) activity.findViewById(R.id.billListView);
+
+                Intent intent = new Intent(BillActivity.kMessage_Changed_Product_Price);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
             }
         };
         // Update the layout
 
         //Edit product description field listener
 
+        holder.nameLabel.addTextChangedListener(holder.nameWatcher);
+        holder.priceLabel.addTextChangedListener(holder.priceWatcher);
 
         for (PersonsLayout personsLayout : holder.personsLayout) {
+
 
 
 
