@@ -59,8 +59,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
-                    bill.getPersons().toArray( new Person[bill.getPersons().size()]
-            ));
+                   bill);
 
             //billAdapter.setPeople(bill.getPersons());
             if (lineListView != null) {

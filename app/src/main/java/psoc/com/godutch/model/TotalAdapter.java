@@ -1,7 +1,11 @@
 package psoc.com.godutch.model;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import org.w3c.dom.Text;
 import java.io.Serializable;
 import java.util.List;
 
+import psoc.com.godutch.BillActivity;
 import psoc.com.godutch.R;
 
 /**
@@ -24,14 +29,36 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
 
     int mLayoutResourceId;
     Context mContext = null;
-    Person[] people = null;
+    Bill bill;
 
-    public TotalAdapter(Context context, int resource, Person[] people) {
-        super(context, resource, people);
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            Line messageLine = (Line) intent.getSerializableExtra("line");
+
+
+            notifyDataSetChanged();
+
+
+
+        }
+    };
+
+    public TotalAdapter(Context context, int resource, Bill b) {
+        super(context, resource, b.getPersons());
 
         mContext = context;
         mLayoutResourceId = resource;
-        this.people = people;
+        bill = b;
+
+
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
+
+
+
 
     }
 
@@ -62,7 +89,7 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
             holder = (PersonTotalHolder) row.getTag();
         }
 
-        Person person = people[position];
+        Person person = bill.persons.get(position);
         holder.personName.setText(person.getName());
         holder.total.setText("€ 10.0");
 
@@ -73,4 +100,7 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
         TextView total;
         TextView personName;
     }
+
+
+
 }
