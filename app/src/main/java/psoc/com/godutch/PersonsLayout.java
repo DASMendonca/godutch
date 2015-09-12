@@ -218,7 +218,7 @@ public class PersonsLayout extends FrameLayout{
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
         super.onDetachedFromWindow();
 
-        Log.e("DBUG", "Detaching notification for person " + person.getName());
+       // Log.e("DBUG", "Detaching notification for person " + person.getName());
 
         detached = true;
 
