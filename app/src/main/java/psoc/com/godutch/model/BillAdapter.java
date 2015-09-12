@@ -152,8 +152,11 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
         //Edit product description field listener
 
+        holder.nameLabel.addTextChangedListener(holder.nameWatcher);
+        holder.priceLabel.addTextChangedListener(holder.priceWatcher);
 
         for (PersonsLayout personsLayout : holder.personsLayout) {
+
 
 
 
