@@ -2,8 +2,13 @@ package psoc.com.godutch;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -35,6 +40,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     public static final String kMessage_Changed_Quantities_Name = "lineQuantitiesChangedMessage";
     public static final String kMessage_Changed_Nr_Lines_Name = "nrLinesChangedMessage";
     public static final String kMessage_Changed_Nr_Persons_Name = "nrPersonsChangedMessage";
+    public static final String kMessage_Changed_Product_Price = "productPriceChangedMessage";
 
     private ListView lineListView;
     private ListView totalsListView;
@@ -44,6 +50,13 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     Bill bill = null;
     NumberFormat formatter = NumberFormat.getNumberInstance();
+
+    private BroadcastReceiver priceMsgReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            totalAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +72,9 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(R.layout.actionbar);
+
+        //Subscribe productPriceChangedMessage
+        LocalBroadcastManager.getInstance(this).registerReceiver(priceMsgReceiver, new IntentFilter(BillActivity.kMessage_Changed_Product_Price));
 
         lineListView = (ListView) findViewById(R.id.billListView);
         totalsListView = (ListView) findViewById(R.id.peopleTotals);
