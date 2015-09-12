@@ -208,4 +208,18 @@ public class Bill implements Serializable{
 
     }
 
+    public float total(){
+
+        float total = 0.0f;
+        for (Person person : persons) {
+
+            total += totalForPerson(person);
+
+        }
+
+        return total;
+
+
+    }
+
 }
