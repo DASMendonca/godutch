@@ -145,7 +145,17 @@ public class Line implements Serializable{
     public void removeQuantity(Person p){
 
 
-        quantities.put(p,quantities.get(p)-1);
+        quantities.put(p,0);
+
+        if(allPersonsHaveZeroAsQuantity()){
+
+            for (Person person : quantities.keySet()) {
+                quantities.put(person,1);
+            }
+
+        }
+
+
 
 
     }
@@ -173,6 +183,21 @@ public class Line implements Serializable{
     public float priceForPerson(Person p){
 
         return  price*quantityForPerson(p)/allQuantities();
+
+    }
+
+    public boolean allPersonsHaveZeroAsQuantity(){
+
+
+        for (Person person : this.quantities.keySet()) {
+
+            if (this.quantities.get(person) != 0){
+
+                return false;
+            }
+        }
+
+        return true;
 
     }
 
