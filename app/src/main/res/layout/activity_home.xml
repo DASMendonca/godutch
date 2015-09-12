@@ -110,7 +110,8 @@
                 android:textColor="#616161"
                 android:background="@android:color/transparent"
                 android:textSize="35dp"
-                android:drawablePadding="10dp" />
+                android:drawablePadding="10dp"
+                android:onClick="goToMyBills"/>
 
         </LinearLayout>
 
