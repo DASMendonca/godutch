@@ -1,8 +1,10 @@
 package psoc.com.godutch;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.ShapeDrawable;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +23,20 @@ public class PersonsLayout extends FrameLayout{
     TextView counter;
     TextView nameView;
     View mainButtonCircleView;
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            Line messageLine = (Line) intent.getSerializableExtra("line");
+
+            if (messageLine != line){
+                return;
+            }
+
+           updateViewsState();
+        }
+    };
 
     boolean inflated = false;
     private Line line;
@@ -41,17 +57,21 @@ public class PersonsLayout extends FrameLayout{
     }
 
     public PersonsLayout(
-            Context context,AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+            Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
     }
-
-
 
     @Override
     protected void onFinishInflate() {
 
         super.onFinishInflate();
+
+
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
+
+
 
 
         b = (Button) this.findViewById(R.id.button);
@@ -62,7 +82,7 @@ public class PersonsLayout extends FrameLayout{
 
         inflated = true;
 
-        refreshViews();
+        updateViewsState();
 
         if(line != null && person != null && counter != null){
 
@@ -79,11 +99,13 @@ public class PersonsLayout extends FrameLayout{
 
                 line.addQuantity(person);
 
-                refreshViews();
+                updateViewsState();
 
+                //Broadcast Message to other views interested in it
 
-
-
+                Intent intent = new Intent(BillActivity.kMessage_Changed_Quantities_Name);
+                intent.putExtra("line", line);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
 
 
@@ -100,34 +122,39 @@ public class PersonsLayout extends FrameLayout{
         });
     }
 
-    private void refreshViews() {
-
+    private void updateViewsState() {
 
         if(line != null && person != null && inflated){
 
             counter.setText(String.valueOf(line.quantityForPerson(person)));
 
-            if (line.quantityForPerson(person) == 0 ){
 
-                counter.setAlpha(0.0f);
+            if(line.quantityForPerson(person) == 0){
+
                 mainButtonCircleView.setBackgroundResource(R.drawable.button_circle_design_gray);
-
             }
             else{
 
-
                 mainButtonCircleView.setBackgroundResource(R.drawable.button_circle_design_blue);
-                counter.setAlpha(1.0f);
-
             }
-            if(line.allPersonsHaveOneAsQuantity()){
+
+
+
+
+            if(line.allPersonsHaveOneAsQuantity() || line.quantityForPerson(person) == 0){
 
                 counter.setAlpha(0.0f);
+
+            }
+            else {
+
+                counter.setAlpha(1.0f);
             }
 
+
+
+
         }
-
-
 
     }
 
@@ -136,7 +163,7 @@ public class PersonsLayout extends FrameLayout{
 
 
 
-        refreshViews();
+        updateViewsState();
 
         if(line != null && person != null && counter != null){
 
@@ -155,13 +182,22 @@ public class PersonsLayout extends FrameLayout{
         this.line = line;
 
 
-        refreshViews();
+        updateViewsState();
 
         if(line != null && person != null && counter != null){
 
             counter.setText(String.valueOf(line.quantityForPerson(person)));
 
         }
+
+
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
 
 
     }

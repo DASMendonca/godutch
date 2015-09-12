@@ -15,10 +15,19 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:id="@+id/billListView"
-        android:background="@color/go_dutch_background"
+        android:background="#fffef3"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_weight="4"
         />
+
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/peopleTotals"
+        android:background="#fffef3"
+        android:layout_weight="4"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -26,6 +35,10 @@
         android:layout_weight="1"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_add_circle_outline_black_48dp"
-        android:background="@drawable/button_circle_design_white"/>
+        android:background="@drawable/button_circle_design_white"
+        android:onClick="addLineButtonClicked"
+        />
+
+
 
 </LinearLayout>

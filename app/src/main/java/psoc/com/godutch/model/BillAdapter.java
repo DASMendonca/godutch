@@ -21,15 +21,18 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
     Activity activity;
     int mLayoutResourceId;
-    Line[] lines = null;
+
+
+    Bill bill;
     //ArrayList<Person> people = new ArrayList<>();
 
-    public BillAdapter(Activity a, int resource, Line[] lines) {
-        super(a, resource, lines);
+    public BillAdapter(Activity a, int resource, Bill bill) {
 
+        super(a, resource, bill.getLines());
         this.mLayoutResourceId = resource;
         this.activity = a;
-        this.lines = lines;
+        this.bill = bill;
+
 
 
 
@@ -53,14 +56,14 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
 
-            for (int i = 0; i < this.lines[0].getBill().persons.size() ; i++) {
+            for (int i = 0; i < bill.persons.size() ; i++) {
 
-                Person p = this.lines[0].getBill().persons.get(i);
+                Person p = bill.persons.get(i);
 
                 PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
 
                 layout.setPerson(p);
-                layout.setLine(this.lines[position]);
+                layout.setLine(this.bill.getLines().get(position));
 
                 container.addView(layout);
 

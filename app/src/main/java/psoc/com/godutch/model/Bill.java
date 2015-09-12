@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import psoc.com.godutch.GoDutch;
@@ -38,7 +39,10 @@ import psoc.com.godutch.parsing.O_ReplacerFilter;
 
 public class Bill implements Serializable{
 
-    Line[] lines = new Line[0];
+
+    ArrayList<Line> lines = new ArrayList<>();
+
+    //Line[] lines = new Line[0];
 
     ArrayList<Person> persons = new ArrayList<Person>();
 
@@ -65,7 +69,7 @@ public class Bill implements Serializable{
             recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
         }
 
-        recognizedText = recognizedText.trim();
+        //recognizedText = recognizedText.trim();
 
         this.buildFromString(recognizedText);
     }
@@ -82,12 +86,12 @@ public class Bill implements Serializable{
 
         ArrayList<Line> lines = this.linesFromString(s,this);
         //debugDefaultParams(lines);
-        this.lines = lines.toArray(new Line[lines.size()]);
+        this.lines = lines;
 
     }
 
     public Bill(Line[] lines){
-        this.lines = lines;
+        this.lines = new ArrayList<Line>(Arrays.asList(lines));
     }
 
 
@@ -144,6 +148,15 @@ public class Bill implements Serializable{
 
         ArrayList<String> input = new ArrayList<>();
         input.add(inputString);
+
+
+        ArrayList<String> a = f1.filter(input);
+        ArrayList<String> b = f2.filter(a);
+        ArrayList<String> c = f3.filter(b);
+        ArrayList<String> d = f4.filter(c);
+        ArrayList<String> e = f5.filter(d);
+
+
         ArrayList<String> output = f5.filter(f4.filter(f3.filter(f2.filter(f1.filter(input)))));
 
         ArrayList<Line> lines = new ArrayList<>();
@@ -165,7 +178,48 @@ public class Bill implements Serializable{
     }
 
 
-    public Line[] getLines() {
+    public ArrayList<Line> getLines() {
         return lines;
     }
+
+
+    public void addEmptyLine() {
+
+
+        Line newLine = new Line("New Product",0.00f,this);
+
+        this.lines.add(newLine);
+
+
+    }
+
+
+    public float totalForPerson(Person p){
+
+        float totalSoFar = 0.0f;
+        for (Line line : lines) {
+
+
+            totalSoFar += line.priceForPerson(p);
+
+        }
+
+        return totalSoFar;
+
+    }
+
+    public float total(){
+
+        float total = 0.0f;
+        for (Person person : persons) {
+
+            total += totalForPerson(person);
+
+        }
+
+        return total;
+
+
+    }
+
 }
