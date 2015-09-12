@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import psoc.com.godutch.BillActivity;
@@ -31,6 +32,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
     Activity activity;
     int mLayoutResourceId;
+    NumberFormat formatter = NumberFormat.getNumberInstance();
 
 
     Bill bill;
@@ -39,13 +41,12 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
     public BillAdapter(Activity a, int resource, Bill bill) {
 
         super(a, resource, bill.getLines());
+
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
         this.mLayoutResourceId = resource;
         this.activity = a;
         this.bill = bill;
-
-
-
-
     }
 
 
@@ -66,7 +67,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
 
-            for (int i = 0; i < bill.persons.size() ; i++) {
+            for (int i = 0; i < bill.persons.size(); i++) {
 
                 Person p = bill.persons.get(i);
 
@@ -81,7 +82,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             }
 
 
-        } else{
+        } else {
 
             view = convertView;
         }
@@ -98,7 +99,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         //LinearLayout people = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
         productDescription.setText(line.getProductDescription());
-        productPrice.setText(String.valueOf(line.getPrice()));
+        productPrice.setText(formatter.format(line.getPrice()));
 
         // Update the layout
 
