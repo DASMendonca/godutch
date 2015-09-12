@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:text="Dummy Person"
         android:layout_alignParentLeft="true"
+        android:fontFamily="sans-serif-light"
         android:layout_marginLeft="@dimen/round_button_margin"
         />
     <TextView
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="€ 10"
+        android:fontFamily="sans-serif-light"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/round_button_margin"
         />

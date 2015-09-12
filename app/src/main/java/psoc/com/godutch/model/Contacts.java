@@ -23,16 +23,16 @@ public class Contacts {
     private static void initializeLists() {
         list = new ArrayList<Person>();
         allNames = new ArrayList<String>();
-        Person person = new Person("Daniel M.", "dm");
+        Person person = new Person("Daniel M.", "DM");
         allNames.add("Daniel M.");
         list.add(person);
-        person = new Person("José M.", "jm");
+        person = new Person("José M.", "JM");
         allNames.add("José M.");
         list.add(person);
-        person = new Person("Rodolfo R.", "rr");
+        person = new Person("Rodolfo R.", "RR");
         allNames.add("Rodolfo R.");
         list.add(person);
-        person = new Person("Vitor M.", "vm");
+        person = new Person("Vitor M.", "VM");
         allNames.add("Vitor M.");
         list.add(person);
     }

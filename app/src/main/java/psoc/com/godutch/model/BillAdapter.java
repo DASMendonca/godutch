@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -75,6 +76,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
             holder.nameLabel = (EditText) view.findViewById(R.id.productDescription);
             holder.priceLabel = (EditText) view.findViewById(R.id.rowPrice);
+            holder.deleteButton = (ImageButton) view.findViewById(R.id.deleteButton);
 
 
             view.setTag(holder);
@@ -99,7 +101,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
 
         holder.nameLabel.setText(line.getProductDescription());
-        holder.priceLabel.setText(formatter.format(line.getPrice()));
+        holder.priceLabel.setText("€ "+(formatter.format(line.getPrice())));
 
 
         holder.nameWatcher = new TextWatcher() {
@@ -146,6 +148,19 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         holder.nameLabel.addTextChangedListener(holder.nameWatcher);
         holder.priceLabel.addTextChangedListener(holder.priceWatcher);
 
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                bill.removeLine(position);
+                notifyDataSetChanged();
+                Intent intent = new Intent(BillActivity.kMessage_Changed_Nr_Lines_Name);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+            }
+        });
+
         LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
         container.removeAllViews();
         addButtons(position, view, holder);
@@ -185,6 +200,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         public TextWatcher priceWatcher;
         public TextView nameLabel;
         public TextView priceLabel;
+        public ImageButton deleteButton;
         public ArrayList<PersonsLayout> personsLayout = new ArrayList<PersonsLayout>();
         public ArrayList<Person> persons;
 

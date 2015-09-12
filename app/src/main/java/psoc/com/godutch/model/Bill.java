@@ -177,6 +177,14 @@ public class Bill implements Serializable{
     }
 
 
+    public void removeLine(int position){
+
+
+        lines.remove(position);
+
+
+    }
+
     public float totalForPerson(Person p){
 
         float totalSoFar = 0.0f;

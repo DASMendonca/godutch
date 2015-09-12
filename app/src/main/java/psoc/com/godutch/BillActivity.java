@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -60,7 +61,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         @Override
         public void onReceive(Context context, Intent intent) {
             totalAdapter.notifyDataSetChanged();
-            total.setText(formatter.format(bill.getTotal()));
+            total.setText("€ " + formatter.format(bill.getTotal()));
         }
     };
 
@@ -68,6 +69,15 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
+        int titleId = getResources().getIdentifier("action_bar_title", "id",
+                "android");
+        TextView yourTextView = (TextView) findViewById(titleId);
+        //yourTextView.setTextColor(getResources().getColor(R.color.black));
+        yourTextView.setTypeface(Typeface.create("sans-serif-bold", Typeface.NORMAL));
+
+
 
         formatter.setMinimumFractionDigits(2);
         formatter.setMaximumFractionDigits(2);
@@ -81,6 +91,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         //Subscribe productPriceChangedMessage
         LocalBroadcastManager.getInstance(this).registerReceiver(priceMsgReceiver, new IntentFilter(BillActivity.kMessage_Changed_Product_Price));
+        LocalBroadcastManager.getInstance(this).registerReceiver(priceMsgReceiver, new IntentFilter(BillActivity.kMessage_Changed_Nr_Lines_Name));
 
         lineListView = (ListView) findViewById(R.id.billListView);
         totalsListView = (ListView) findViewById(R.id.peopleTotals);
@@ -90,7 +101,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         if (bill != null) {
 
-            total.setText(formatter.format( bill.getTotal()));
+            total.setText("€ "+formatter.format( bill.getTotal()));
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
