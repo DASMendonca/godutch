@@ -103,9 +103,8 @@ public class BillActivity extends Activity {
     }
 
 
-    public void addPersons(ArrayList<Integer> personsID) {
-        bill.getPersons().clear();
-
+    public void updatePersons(ArrayList<Integer> personsID) {
+        /*
         Person person = null;
         for (Integer id: personsID) {
             switch (id) {
@@ -128,6 +127,7 @@ public class BillActivity extends Activity {
             }
             
         }
+        */
     }
 
 }

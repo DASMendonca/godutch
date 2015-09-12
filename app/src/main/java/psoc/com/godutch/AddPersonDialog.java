@@ -68,7 +68,7 @@ public class AddPersonDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK, so save the mSelectedItems results somewhere
                         // or return them to the component that opened the dialog
-                        ((BillActivity) getActivity()).addPersons(mSelectedItems);
+                        ((BillActivity) getActivity()).updatePersons(mSelectedItems);
 
                     }
                 })
