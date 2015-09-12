@@ -101,7 +101,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
 
         holder.nameLabel.setText(line.getProductDescription());
-        holder.priceLabel.setText("€ "+(formatter.format(line.getPrice())));
+        holder.priceLabel.setText((formatter.format(line.getPrice())));
 
 
         holder.nameWatcher = new TextWatcher() {
