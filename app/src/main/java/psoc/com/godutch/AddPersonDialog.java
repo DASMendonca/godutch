@@ -37,7 +37,7 @@ public class AddPersonDialog extends DialogFragment {
 
         for (int i = 0; i<Contacts.allContacts().size(); i++) {
             for (Person p: persons) {
-                if (Contacts.getAllNames().get(i).equals(p.getName())){
+                if (Contacts.allContacts().get(i).equals(p)){
                     bs[i] = Boolean.TRUE;
                     mSelectedItems.add(p);
                     break;
@@ -63,7 +63,7 @@ public class AddPersonDialog extends DialogFragment {
                                 } else {
                                     Person person = null;
                                     for (Person p : mSelectedItems) {
-                                        if (Contacts.getAllNames().get(which).equals(p.getName())) {
+                                        if (Contacts.allContacts().get(which).equals(p)) {
                                             // Else, if the item is already in the array, remove it
                                             person = p;
                                             break;

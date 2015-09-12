@@ -35,5 +35,11 @@ public class Person implements Serializable{
         this.shortName = shortName;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if ( !(obj instanceof Person)) return false;
+
+        return  this.name.equals(((Person) obj).getName());
+    }
 
 }

@@ -154,7 +154,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         for (Person p: bill.getPersons()) {
             boolean found = false;
             for (Person p_u: personsUpdated ) {
-                if (p.getName().equals(p_u.getName())) {
+                if (p.equals(p_u)) {
                     found = true;
                     break;
                 }
@@ -169,7 +169,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         for (Person p_u: personsUpdated) {
             boolean found = false;
             for (Person p: bill.getPersons() ) {
-                if (p.getName().equals(p_u.getName())) {
+                if (p.equals(p_u)) {
                     found = true;
                     break;
                 }
@@ -177,8 +177,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
             if (!found) bill.addPerson(p_u);
         }
 
-        ListView lv = (ListView) findViewById(R.id.billListView);
-        ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
 
+        billAdapter.notifyDataSetChanged();
     }
 }
