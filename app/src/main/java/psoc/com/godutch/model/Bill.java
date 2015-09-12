@@ -1,35 +1,14 @@
 package psoc.com.godutch.model;
 
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.RectF;
-import android.graphics.pdf.PdfRenderer;
-import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ListView;
-
 import com.googlecode.tesseract.android.TessBaseAPI;
-
-
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import psoc.com.godutch.GoDutch;
 import psoc.com.godutch.Home;
-import psoc.com.godutch.R;
 import psoc.com.godutch.parsing.B_ReplacerFilter;
+import psoc.com.godutch.parsing.CommaReplacer;
 import psoc.com.godutch.parsing.L_ReplacerFilter;
 import psoc.com.godutch.parsing.LineFilter;
 import psoc.com.godutch.parsing.LineWithPriceFilter;
@@ -144,7 +123,10 @@ public class Bill implements Serializable{
         O_ReplacerFilter f2 = new O_ReplacerFilter();
         L_ReplacerFilter f3 = new L_ReplacerFilter();
         B_ReplacerFilter f4 = new B_ReplacerFilter();
-        LineWithPriceFilter f5 = new LineWithPriceFilter();
+        CommaReplacer f5 = new CommaReplacer();
+        LineWithPriceFilter f6 = new LineWithPriceFilter();
+
+
 
         ArrayList<String> input = new ArrayList<>();
         input.add(inputString);
@@ -155,9 +137,10 @@ public class Bill implements Serializable{
         ArrayList<String> c = f3.filter(b);
         ArrayList<String> d = f4.filter(c);
         ArrayList<String> e = f5.filter(d);
+        ArrayList<String> f = f6.filter(e);
 
 
-        ArrayList<String> output = f5.filter(f4.filter(f3.filter(f2.filter(f1.filter(input)))));
+        ArrayList<String> output = f;
 
         ArrayList<Line> lines = new ArrayList<>();
 
@@ -208,7 +191,7 @@ public class Bill implements Serializable{
 
     }
 
-    public float total(){
+    public float getTotal(){
 
         float total = 0.0f;
         for (Person person : persons) {

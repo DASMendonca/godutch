@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import psoc.com.godutch.R;
@@ -36,14 +38,20 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     private ListView lineListView;
     private ListView totalsListView;
+    private TextView total;
     private BillAdapter billAdapter;
     private TotalAdapter totalAdapter;
+
     Bill bill = null;
+    NumberFormat formatter = NumberFormat.getNumberInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
 
         setContentView(R.layout.activity_bill);
 
@@ -54,11 +62,13 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         lineListView = (ListView) findViewById(R.id.billListView);
         totalsListView = (ListView) findViewById(R.id.peopleTotals);
+        total = (TextView) findViewById(R.id.billTotal);
 
         setBill();
 
         if (bill != null) {
 
+            total.setText(formatter.format( bill.getTotal()));
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
@@ -110,11 +120,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     }
 
-
     public void addLineButtonClicked(View button){
-
-
-
 
         bill.addEmptyLine();
 
