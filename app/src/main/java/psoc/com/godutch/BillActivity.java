@@ -8,26 +8,37 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import java.util.List;
 
 import psoc.com.godutch.R;
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.BillAdapter;
 import psoc.com.godutch.model.Line;
 import psoc.com.godutch.model.Person;
+import psoc.com.godutch.model.Person;
+import psoc.com.godutch.model.TotalAdapter;
 
 /**
  * Created by asmen on 10/09/2015.
  */
-public class BillActivity extends Activity {
+public class BillActivity extends Activity implements PersonFragment.OnFragmentInteractionListener {
 
     public static final String INTENT_KEY_BILL_LINES = "billLinesKey";
     public static final String INTENT_KEY_BILL = "billKey";
 
+    public static final String kMessage_Changed_Quantities_Name = "lineQuantitiesChangedMessage";
+    public static final String kMessage_Changed_Nr_Lines_Name = "nrLinesChangedMessage";
+    public static final String kMessage_Changed_Nr_Persons_Name = "nrPersonsChangedMessage";
+
     private ListView lineListView;
+    private ListView totalsListView;
     private BillAdapter billAdapter;
+    private TotalAdapter totalAdapter;
     Bill bill = null;
 
     @Override
@@ -43,21 +54,24 @@ public class BillActivity extends Activity {
         actionBar.setCustomView(R.layout.actionbar);
 
         lineListView = (ListView) findViewById(R.id.billListView);
+        totalsListView = (ListView) findViewById(R.id.peopleTotals);
 
         setBill();
 
         if (bill != null) {
 
 
-            Line[] l = bill.getLines();
+            billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
+            totalAdapter = new TotalAdapter(this,R.layout.person_total,
+                   bill);
 
-
-            billAdapter = new BillAdapter(this, R.layout.bill_line, l);
             //billAdapter.setPeople(bill.getPersons());
-
             if (lineListView != null) {
                 lineListView.setAdapter(billAdapter);
             }
+
+            if(totalsListView != null)
+                totalsListView.setAdapter(totalAdapter);
         }
 
     }
@@ -102,6 +116,25 @@ public class BillActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+
+
+    }
+
+
+    public void addLineButtonClicked(View button){
+
+
+
+
+        bill.addEmptyLine();
+
+        billAdapter.notifyDataSetChanged();
+
+        System.out.println("Adding line");
+
 
     public void updatePersons(ArrayList<Integer> personsID) {
         /*
@@ -129,5 +162,4 @@ public class BillActivity extends Activity {
         }
         */
     }
-
 }

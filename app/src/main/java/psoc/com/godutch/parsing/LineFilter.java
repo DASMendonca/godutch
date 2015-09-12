@@ -15,7 +15,23 @@ public class LineFilter extends Filter {
     public ArrayList<String> filter(ArrayList<String> input){
 
 
-        return stringsMatchesPattern("(.*)(?:\n) | (.*)(?:$)",input);
+
+        ArrayList<String> toReturn = new ArrayList<String>();
+
+        for (String s : input) {
+
+            String[] splits = s.split("\n");
+
+            for (String split : splits) {
+
+                toReturn.add(split);
+
+            }
+
+        }
+
+        return toReturn;
+        //return stringsMatchesPattern("(.*)(?:\n) | (.*)(?:$)",input);
 
     }
 }
