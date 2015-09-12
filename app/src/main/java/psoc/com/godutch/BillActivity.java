@@ -124,9 +124,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     }
 
 
-    public void addLineButtonClicked(View button){
-
-
+    public void addLineButtonClicked(View button) {
 
 
         bill.addEmptyLine();
@@ -134,6 +132,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         billAdapter.notifyDataSetChanged();
 
         System.out.println("Adding line");
+    }
 
 
     public void updatePersons(ArrayList<Integer> personsID) {
