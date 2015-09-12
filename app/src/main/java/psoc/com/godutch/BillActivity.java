@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,10 +15,14 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -26,6 +31,7 @@ import psoc.com.godutch.R;
 import psoc.com.godutch.model.Bill;
 import psoc.com.godutch.model.BillAdapter;
 import psoc.com.godutch.model.Line;
+import psoc.com.godutch.model.Person;
 import psoc.com.godutch.model.Person;
 import psoc.com.godutch.model.TotalAdapter;
 
@@ -55,7 +61,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         @Override
         public void onReceive(Context context, Intent intent) {
             totalAdapter.notifyDataSetChanged();
-            total.setText(formatter.format(bill.getTotal()));
+            total.setText("€ " + formatter.format(bill.getTotal()));
         }
     };
 
@@ -63,6 +69,15 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
+        int titleId = getResources().getIdentifier("action_bar_title", "id",
+                "android");
+        TextView yourTextView = (TextView) findViewById(titleId);
+        //yourTextView.setTextColor(getResources().getColor(R.color.black));
+        yourTextView.setTypeface(Typeface.create("sans-serif-bold", Typeface.NORMAL));
+
+
 
         formatter.setMinimumFractionDigits(2);
         formatter.setMaximumFractionDigits(2);
@@ -76,6 +91,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         //Subscribe productPriceChangedMessage
         LocalBroadcastManager.getInstance(this).registerReceiver(priceMsgReceiver, new IntentFilter(BillActivity.kMessage_Changed_Product_Price));
+        LocalBroadcastManager.getInstance(this).registerReceiver(priceMsgReceiver, new IntentFilter(BillActivity.kMessage_Changed_Nr_Lines_Name));
 
         lineListView = (ListView) findViewById(R.id.billListView);
         totalsListView = (ListView) findViewById(R.id.peopleTotals);
@@ -85,7 +101,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         if (bill != null) {
 
-            total.setText(formatter.format( bill.getTotal()));
+            total.setText("€ "+formatter.format( bill.getTotal()));
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
@@ -109,10 +125,22 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bill, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        MenuItem btn = (MenuItem) menu.findItem(R.id.action_search);
+        btn.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                AddPersonDialog dlg = new AddPersonDialog();
+                dlg.show(getFragmentManager(), "Person");
+                return true;
+            }
+        });
+
+        return true;
     }
 
     @Override
@@ -139,12 +167,48 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     public void addLineButtonClicked(View button){
 
+
         bill.addEmptyLine();
 
         billAdapter.notifyDataSetChanged();
 
-        System.out.println("Adding line");
+        //System.out.println("Adding line");
+
+        lineListView.setSelection(lineListView.getCount() - 1);
+    }
 
 
+    public void updatePersons(ArrayList<Person> personsUpdated) {
+
+        ArrayList<Person> tempList = new ArrayList<Person>();
+        for (Person p: bill.getPersons()) {
+            boolean found = false;
+            for (Person p_u: personsUpdated ) {
+                if (p.equals(p_u)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) tempList.add(p);
+        }
+
+        for (Person p: tempList) {
+            bill.removePerson(p);
+        }
+
+        for (Person p_u: personsUpdated) {
+            boolean found = false;
+            for (Person p: bill.getPersons() ) {
+                if (p.equals(p_u)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) bill.addPerson(p_u);
+        }
+
+
+        billAdapter.notifyDataSetChanged();
+        totalAdapter.notifyDataSetChanged();
     }
 }

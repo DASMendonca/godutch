@@ -95,7 +95,7 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
         holder.personName.setText(person.getName());
 
         String totalStr = formatter.format(bill.totalForPerson(bill.persons.get(position)));
-        holder.total.setText(totalStr);
+        holder.total.setText("€ "+totalStr);
 
         return row;
     }
