@@ -70,7 +70,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
 
-            addButtons(position, view, holder);
+            //addButtons(position, view, holder);
 
 
             holder.nameLabel = (EditText) view.findViewById(R.id.productDescription);
@@ -146,11 +146,6 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         holder.nameLabel.addTextChangedListener(holder.nameWatcher);
         holder.priceLabel.addTextChangedListener(holder.priceWatcher);
 
-
-        Log.e("", "name " + line.getProductDescription() + " for position " + String.valueOf(position) + " " + bill.getLines().get(position).getProductDescription());
-
-
-
         LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
         container.removeAllViews();
         addButtons(position, view, holder);
@@ -168,6 +163,8 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         for (int i = 0; i < bill.persons.size(); i++) {
 
             Person p = bill.persons.get(i);
+
+            Log.e("DBUG","Adding button for person "+p.getName());
 
             PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
 

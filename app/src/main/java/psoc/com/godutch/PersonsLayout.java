@@ -43,19 +43,14 @@ public class PersonsLayout extends FrameLayout{
             }
 
 
+            if (detached){
 
-            boolean personPresent = false;
-            for (Person currentPerson : line.getBill().getPersons()) {
+                Log.e("DBUG","Calling on detached "+person.getName());
 
-                if (currentPerson.equals(person)){
-
-                    personPresent = true;
-                    break;
-
-                }
             }
 
-            if (!personPresent)  return;
+
+            Log.e("DBUG","Recieving notification for person "+person.getName());
 
 
 
@@ -89,9 +84,6 @@ public class PersonsLayout extends FrameLayout{
     protected void onFinishInflate() {
 
         super.onFinishInflate();
-
-
-        Context context = getContext();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
 
 
@@ -223,13 +215,12 @@ public class PersonsLayout extends FrameLayout{
     @Override
     protected void onDetachedFromWindow() {
 
-        Context context = getContext();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
         super.onDetachedFromWindow();
 
+        Log.e("DBUG", "Detaching notification for person " + person.getName());
+
         detached = true;
-
-
 
     }
 }
