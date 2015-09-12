@@ -145,7 +145,7 @@ public class Line implements Serializable{
     public void removeQuantity(Person p){
 
 
-        quantities.put(p,quantities.get(p)-1);
+        quantities.put(p,0);
 
 
     }

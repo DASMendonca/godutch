@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -68,10 +71,7 @@ public class PersonsLayout extends FrameLayout{
         super.onFinishInflate();
 
 
-
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
-
-
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
 
 
         b = (Button) this.findViewById(R.id.button);
@@ -84,7 +84,7 @@ public class PersonsLayout extends FrameLayout{
 
         updateViewsState();
 
-        if(line != null && person != null && counter != null){
+        if (line != null && person != null && counter != null) {
 
             counter.setText(String.valueOf(line.quantityForPerson(person)));
 
@@ -108,18 +108,24 @@ public class PersonsLayout extends FrameLayout{
                 LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
 
-
             }
         });
 
-        b.setOnTouchListener(new OnTouchListener() {
+
+        b.setOnLongClickListener(new OnLongClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onLongClick(View v) {
+                line.removeQuantity(person);
+                updateViewsState();
 
-                return false;
+                Intent intent = new Intent(BillActivity.kMessage_Changed_Quantities_Name);
+                intent.putExtra("line", line);
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 
+                return true;
             }
         });
+
     }
 
     private void updateViewsState() {
