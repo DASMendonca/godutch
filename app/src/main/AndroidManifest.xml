@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".BillActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:configChanges="orientation"
             android:label="@string/title_activity_bill"
             android:screenOrientation="portrait" >
         </activity>
