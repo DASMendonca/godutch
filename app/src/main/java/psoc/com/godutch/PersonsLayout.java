@@ -26,6 +26,11 @@ public class PersonsLayout extends FrameLayout{
     TextView counter;
     TextView nameView;
     View mainButtonCircleView;
+    boolean inflated = false;
+    private Line line;
+    private Person person;
+
+    boolean detached = false;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -37,14 +42,24 @@ public class PersonsLayout extends FrameLayout{
                 return;
             }
 
+
+            if (detached){
+
+                Log.e("DBUG","Calling on detached "+person.getName());
+
+            }
+
+
+            Log.e("DBUG","Recieving notification for person "+person.getName());
+
+
+
            updateViewsState();
+
         }
     };
 
-    boolean inflated = false;
-    private Line line;
 
-    private Person person;
 
 
     public PersonsLayout(Context context) {
@@ -69,8 +84,6 @@ public class PersonsLayout extends FrameLayout{
     protected void onFinishInflate() {
 
         super.onFinishInflate();
-
-
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
 
 
@@ -201,10 +214,13 @@ public class PersonsLayout extends FrameLayout{
 
     @Override
     protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
 
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
+        super.onDetachedFromWindow();
 
+        Log.e("DBUG", "Detaching notification for person " + person.getName());
+
+        detached = true;
 
     }
 }

@@ -70,7 +70,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
 
-            addButtons(position, view, holder);
+            //addButtons(position, view, holder);
 
 
             holder.nameLabel = (EditText) view.findViewById(R.id.productDescription);
@@ -100,7 +100,6 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
         holder.nameLabel.setText(line.getProductDescription());
         holder.priceLabel.setText(formatter.format(line.getPrice()));
-
 
 
         holder.nameWatcher = new TextWatcher() {
@@ -147,62 +146,9 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         holder.nameLabel.addTextChangedListener(holder.nameWatcher);
         holder.priceLabel.addTextChangedListener(holder.priceWatcher);
 
-
-        Log.e("","name " + line.getProductDescription() + " for position " + String.valueOf(position) +" "+ bill.getLines().get(position).getProductDescription());
-
-
-
-        boolean shouldReplace = false;
-        if(holder.persons.size() != bill.persons.size()){
-
-            shouldReplace = true;
-
-        }
-
-        if(!shouldReplace){
-
-            for (int i = 0; i < holder.persons.size(); i++) {
-
-                Person fromHolder = holder.persons.get(i);
-                Person fromBill = bill.persons.get(i);
-
-                if (!fromHolder.equals(fromBill)){
-
-                    shouldReplace = true;
-                    break;
-
-                }
-            }
-
-
-        }
-
-        for (int i = 0; i < holder.persons.size(); i++) {
-
-            Person fromHolder = holder.persons.get(i);
-            Person fromBill = bill.persons.get(i);
-
-            if (!fromHolder.equals(fromBill)){
-
-                shouldReplace = true;
-                break;
-            }
-
-        }
-
-        if (shouldReplace){//remove and re-add buttons views
-
-            LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
-            container.removeAllViews();
-
-            addButtons(position,view,holder);
-
-
-        }
-
-
-
-
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
+        container.removeAllViews();
+        addButtons(position, view, holder);
 
 
         return view;
@@ -217,6 +163,8 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         for (int i = 0; i < bill.persons.size(); i++) {
 
             Person p = bill.persons.get(i);
+
+            Log.e("DBUG","Adding button for person "+p.getName());
 
             PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
 
