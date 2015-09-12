@@ -9,6 +9,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import psoc.com.godutch.model.Contacts;
 import psoc.com.godutch.model.Person;
 
 /**
@@ -17,8 +18,7 @@ import psoc.com.godutch.model.Person;
 public class AddPersonDialog extends DialogFragment {
 
     ArrayList<Person> persons = new ArrayList<Person>();
-    ArrayList<Integer> mSelectedItems;
-    ArrayList<String> names;
+    ArrayList<Person> mSelectedItems;
     ArrayList checks;
 
 
@@ -27,22 +27,27 @@ public class AddPersonDialog extends DialogFragment {
 
         persons = ((BillActivity) getActivity()).bill.getPersons();
 
-        mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
+        mSelectedItems = new ArrayList<Person>();  // Where we track the selected items
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        names = new ArrayList<String>();
         checks = new ArrayList<>();
 
-        for (Person p: persons) {
-            names.add(p.getName());
-            checks.add(true);
+        boolean bs[] = new boolean[Contacts.allContacts().size()];
+        Arrays.fill(bs, Boolean.FALSE);
+
+        for (int i = 0; i<Contacts.allContacts().size(); i++) {
+            for (Person p: persons) {
+                if (Contacts.getAllNames().get(i).equals(p.getName())){
+                    bs[i] = Boolean.TRUE;
+                    mSelectedItems.add(p);
+                    break;
+                }
+            }
         }
 
-        CharSequence cs[] = new CharSequence[names.size()];
-        cs = names.toArray(cs);
+        CharSequence cs[] = new CharSequence[Contacts.allContacts().size()];
+        cs = Contacts.getAllNames().toArray(cs);
 
-        boolean bs[] = new boolean[checks.size()];
-        Arrays.fill(bs, Boolean.TRUE);
 
         // Set the dialog title
         builder.setTitle(R.string.add_person)
@@ -54,11 +59,18 @@ public class AddPersonDialog extends DialogFragment {
                             public void onClick(DialogInterface dialog, int which,
                                                 boolean isChecked) {
                                 if (isChecked) {
-                                    // If the user checked the item, add it to the selected items
-                                    mSelectedItems.add(which);
-                                } else if (mSelectedItems.contains(which)) {
-                                    // Else, if the item is already in the array, remove it
-                                    mSelectedItems.remove(Integer.valueOf(which));
+                                    mSelectedItems.add(Contacts.allContacts().get(which));
+                                } else {
+                                    Person person = null;
+                                    for (Person p : mSelectedItems) {
+                                        if (Contacts.getAllNames().get(which).equals(p.getName())) {
+                                            // Else, if the item is already in the array, remove it
+                                            person = p;
+                                            break;
+                                        }
+                                    }
+
+                                    if (person != null) mSelectedItems.remove(person);
                                 }
                             }
                         })

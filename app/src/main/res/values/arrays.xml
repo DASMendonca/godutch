@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="contacts">
-        <item>Daniel Mendonça</item>
-        <item>José Moreira</item>
-        <item>Rodolfo Rodrigues</item>
-        <item>Vítor Mineiro</item>
+        <item>Daniel M.</item>
+        <item>José M.</item>
+        <item>Rodolfo R.</item>
+        <item>Vitor M.</item>
     </string-array>
 </resources>

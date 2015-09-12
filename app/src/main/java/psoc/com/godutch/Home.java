@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import psoc.com.godutch.model.Bill;
+import psoc.com.godutch.model.Contacts;
 import psoc.com.godutch.model.Person;
 import psoc.com.godutch.tests.ParsingTests;
 
@@ -179,14 +180,9 @@ public class Home extends Activity {
 
         Bill bill = new Bill(bitmap);
 
-        Person person = new Person("Daniel M.", "dm");
-       bill.addPerson(person);
-        person = new Person("José M.", "jm");
-       bill.addPerson(person);
-        person = new Person("Rodolfo R.", "rr");
-        bill.addPerson(person);
-        person = new Person("Vitor M.", "vm");
-       bill.addPerson(person);
+        for (Person p: Contacts.allContacts()) {
+            bill.addPerson(p);
+        }
 
         Intent billIntent = new Intent(this, BillActivity.class);
         Bundle extras = new Bundle();

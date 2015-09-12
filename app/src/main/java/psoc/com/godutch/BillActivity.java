@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.view.View;
 import android.widget.ListView;
@@ -135,30 +136,37 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     }
 
 
-    public void updatePersons(ArrayList<Integer> personsID) {
-        /*
-        Person person = null;
-        for (Integer id: personsID) {
-            switch (id) {
-                case 0:
-                    person = new Person("Daniel M.", "dm");
-                    bill.addPerson(person);
+    public void updatePersons(ArrayList<Person> personsUpdated) {
+
+        ArrayList<Person> tempList = new ArrayList<Person>();
+        for (Person p: bill.getPersons()) {
+            boolean found = false;
+            for (Person p_u: personsUpdated ) {
+                if (p.getName().equals(p_u.getName())) {
+                    found = true;
                     break;
-                case 1:
-                    person = new Person("Daniel M.", "dm");
-                    bill.addPerson(person);
-                    break;
-                case 2:
-                    person = new Person("Daniel M.", "dm");
-                    bill.addPerson(person);
-                    break;
-                case 3:
-                    person = new Person("Daniel M.", "dm");
-                    bill.addPerson(person);
-                    break;
+                }
             }
-            
+            if (!found) tempList.add(p);
         }
-        */
+
+        for (Person p: tempList) {
+            bill.removePerson(p);
+        }
+
+        for (Person p_u: personsUpdated) {
+            boolean found = false;
+            for (Person p: bill.getPersons() ) {
+                if (p.getName().equals(p_u.getName())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) bill.addPerson(p_u);
+        }
+
+        ListView lv = (ListView) findViewById(R.id.billListView);
+        ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
+
     }
 }
