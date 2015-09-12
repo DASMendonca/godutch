@@ -28,7 +28,7 @@ import psoc.com.godutch.R;
 /**
  * Created by asmen on 09/09/2015.
  */
-public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
+public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
     Activity activity;
     int mLayoutResourceId;
@@ -65,7 +65,6 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         if (convertView == null) {
 
 
-
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
 
@@ -90,16 +89,10 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             holder.priceLabel = (EditText) view.findViewById(R.id.rowPrice);
 
 
-
-
-
             view.setTag(holder);
 
 
-
-
-
-        } else{
+        } else {
 
             view = convertView;
             holder = (Holder) view.getTag();
@@ -109,12 +102,10 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         Line line = getItem(position);
 
         holder.nameLabel.setText(line.getProductDescription());
-        holder.priceLabel.setText(String.valueOf(line.getPrice()));
+        holder.priceLabel.setText(formatter.format(line.getPrice()));
 
-        if (holder.nameWatcher != null){
+        if (holder.nameWatcher != null) {
 
-        productDescription.setText(line.getProductDescription());
-        productPrice.setText(formatter.format(line.getPrice()));
             holder.nameLabel.removeTextChangedListener(holder.nameWatcher);
             holder.priceLabel.removeTextChangedListener(holder.priceWatcher);
 
@@ -165,7 +156,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
     }
 
 
-    public static class Holder{
+    public static class Holder {
 
 
         public TextWatcher nameWatcher;
@@ -173,8 +164,6 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         public TextView nameLabel;
         public TextView priceLabel;
         public ArrayList<PersonsLayout> personsLayout = new ArrayList<PersonsLayout>();
-
-
 
 
     }
