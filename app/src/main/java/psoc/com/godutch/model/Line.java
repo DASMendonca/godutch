@@ -39,7 +39,7 @@ public class Line implements Serializable{
         }
 
 
-        Pattern numberPattern = Pattern.compile("^.*?(\\d+[\\.,]\\d{2}).*?$");
+        Pattern numberPattern = Pattern.compile("^.*?(\\d+(\\.|,)\\d{2}).*?$");
 
         Matcher numberMatcher = numberPattern.matcher(input);
 
@@ -47,7 +47,9 @@ public class Line implements Serializable{
 
             String group = numberMatcher.group(1);
 
-            float value = Float.parseFloat(numberMatcher.group(1));
+            group = group.replace(',','.');
+
+            float value = Float.parseFloat(group);
 
             if (value > price){
 
@@ -208,5 +210,6 @@ public class Line implements Serializable{
 
         quantities.remove(p);
     }
+
 
 }

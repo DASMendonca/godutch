@@ -18,7 +18,7 @@ public class LineWithPriceFilter extends Filter{
 
         ArrayList<String> toReturn = new ArrayList<String>();
 
-        Pattern p = Pattern.compile("^.*?(\\b(\\p{L}{2,}[\\s(,\\s)-]*)+\\b)(.*?)(\\d+\\.\\d{2}).*$");
+        Pattern p = Pattern.compile("^.*?(\\b(\\p{L}{2,}[\\s(,\\s)-]*)+\\b)(.*?)(\\d+(\\.|,)\\d{2}).*$");
 
         for (String str: input) {
 

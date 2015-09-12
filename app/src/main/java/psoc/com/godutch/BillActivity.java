@@ -35,6 +35,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     private ListView totalsListView;
     private BillAdapter billAdapter;
     private TotalAdapter totalAdapter;
+
     Bill bill = null;
 
     @Override
@@ -109,9 +110,6 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
 
     public void addLineButtonClicked(View button){
-
-
-
 
         bill.addEmptyLine();
 
