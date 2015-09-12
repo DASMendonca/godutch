@@ -140,9 +140,6 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     public void addLineButtonClicked(View button){
 
 
-    public void addLineButtonClicked(View button) {
-
-
         bill.addEmptyLine();
 
         billAdapter.notifyDataSetChanged();
