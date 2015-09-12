@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     private ListView lineListView;
     private ListView totalsListView;
+    private TextView total;
     private BillAdapter billAdapter;
     private TotalAdapter totalAdapter;
     Bill bill = null;
@@ -51,11 +53,13 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         lineListView = (ListView) findViewById(R.id.billListView);
         totalsListView = (ListView) findViewById(R.id.peopleTotals);
+        total = (TextView) findViewById(R.id.billTotal);
 
         setBill();
 
         if (bill != null) {
 
+            total.setText(String.valueOf(bill.getTotal()));
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
@@ -106,7 +110,6 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
 
     }
-
 
     public void addLineButtonClicked(View button){
 

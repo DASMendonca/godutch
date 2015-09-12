@@ -17,6 +17,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.List;
 
 import psoc.com.godutch.BillActivity;
@@ -30,6 +31,8 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
     int mLayoutResourceId;
     Context mContext = null;
     Bill bill;
+    NumberFormat formatter = NumberFormat.getNumberInstance();
+
 
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -82,6 +85,9 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
             holder.personName = (TextView) row.findViewById(R.id.totalPersonName);
             holder.total = (TextView) row.findViewById(R.id.totalForPerson);
 
+            formatter.setMinimumFractionDigits(2);
+            formatter.setMaximumFractionDigits(2);
+
 
             row.setTag(holder);
 
@@ -91,7 +97,9 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
 
         Person person = bill.persons.get(position);
         holder.personName.setText(person.getName());
-        holder.total.setText(Float.toString(bill.totalForPerson(bill.persons.get(position))));
+
+        String totalStr = formatter.format(bill.totalForPerson(bill.persons.get(position)));
+        holder.total.setText(totalStr);
 
         return row;
     }

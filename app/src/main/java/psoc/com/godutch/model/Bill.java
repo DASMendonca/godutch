@@ -208,7 +208,7 @@ public class Bill implements Serializable{
 
     }
 
-    public float total(){
+    public float getTotal(){
 
         float total = 0.0f;
         for (Person person : persons) {
