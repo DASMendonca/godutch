@@ -161,7 +161,9 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         billAdapter.notifyDataSetChanged();
 
-        System.out.println("Adding line");
+        //System.out.println("Adding line");
+
+        lineListView.setSelection(lineListView.getCount() - 1);
     }
 
 
