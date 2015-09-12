@@ -57,9 +57,14 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
+
         View view;
+        Holder holder = new Holder();
 
         if (convertView == null) {
+
+
 
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
@@ -75,36 +80,47 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
                 layout.setPerson(p);
                 layout.setLine(this.bill.getLines().get(position));
-
+                holder.personsLayout.add(layout);
                 container.addView(layout);
 
 
             }
 
+            holder.nameLabel = (EditText) view.findViewById(R.id.productDescription);
+            holder.priceLabel = (EditText) view.findViewById(R.id.rowPrice);
 
-        } else {
+
+
+
+
+            view.setTag(holder);
+
+
+
+
+
+        } else{
 
             view = convertView;
+            holder = (Holder) view.getTag();
         }
 
 
         Line line = getItem(position);
 
-        //get a reference to different view elements we wish to update
-        //TextView productDescription = (TextView) view.findViewById(R.id.productDescription);
-        EditText productDescription = (EditText) view.findViewById(R.id.productDescription);
-        //TextView productPrice = (TextView) view.findViewById(R.id.rowPrice);
-        EditText productPrice = (EditText) view.findViewById(R.id.rowPrice);
+        holder.nameLabel.setText(line.getProductDescription());
+        holder.priceLabel.setText(String.valueOf(line.getPrice()));
 
-        //LinearLayout people = (LinearLayout) view.findViewById(R.id.peopleLayout);
+        if (holder.nameWatcher != null){
 
         productDescription.setText(line.getProductDescription());
         productPrice.setText(formatter.format(line.getPrice()));
+            holder.nameLabel.removeTextChangedListener(holder.nameWatcher);
+            holder.priceLabel.removeTextChangedListener(holder.priceWatcher);
 
-        // Update the layout
+        }
 
-        //Edit product description field listener
-        productDescription.addTextChangedListener(new TextWatcher() {
+        holder.nameWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -121,10 +137,9 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
                 bill.getLines().get(position).setProductDescription(newText);
                 ListView billListView = (ListView) activity.findViewById(R.id.billListView);
             }
-        });
+        };
 
-        //Edit price field listener
-        productPrice.addTextChangedListener(new TextWatcher() {
+        holder.priceWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -141,10 +156,27 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
                 bill.getLines().get(position).setPrice(Float.parseFloat(newText));
                 ListView billListView = (ListView) activity.findViewById(R.id.billListView);
             }
-        });
+        };
+        // Update the layout
 
+        //Edit product description field listener
 
         return view;
+    }
+
+
+    public static class Holder{
+
+
+        public TextWatcher nameWatcher;
+        public TextWatcher priceWatcher;
+        public TextView nameLabel;
+        public TextView priceLabel;
+        public ArrayList<PersonsLayout> personsLayout = new ArrayList<PersonsLayout>();
+
+
+
+
     }
 
 }

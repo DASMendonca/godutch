@@ -81,8 +81,6 @@ public class Home extends Activity {
             }
         });
 
-
-
         //TESS Preparation
 
         String[] paths = new String[]{DATA_PATH, DATA_PATH + "tessdata/"};
@@ -260,5 +258,10 @@ public class Home extends Activity {
 
         onPhotoTaken(bill);
 
+    }
+
+    public void goToMyBills(View view){
+        Intent intent = new Intent(this, MyBills.class);
+        startActivity(intent);
     }
 }
