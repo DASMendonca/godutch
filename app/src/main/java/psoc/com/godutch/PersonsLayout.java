@@ -26,6 +26,11 @@ public class PersonsLayout extends FrameLayout{
     TextView counter;
     TextView nameView;
     View mainButtonCircleView;
+    boolean inflated = false;
+    private Line line;
+    private Person person;
+
+    boolean detached = false;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -37,14 +42,29 @@ public class PersonsLayout extends FrameLayout{
                 return;
             }
 
+
+
+            boolean personPresent = false;
+            for (Person currentPerson : line.getBill().getPersons()) {
+
+                if (currentPerson.equals(person)){
+
+                    personPresent = true;
+                    break;
+
+                }
+            }
+
+            if (!personPresent)  return;
+
+
+
            updateViewsState();
+
         }
     };
 
-    boolean inflated = false;
-    private Line line;
 
-    private Person person;
 
 
     public PersonsLayout(Context context) {
@@ -71,6 +91,7 @@ public class PersonsLayout extends FrameLayout{
         super.onFinishInflate();
 
 
+        Context context = getContext();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, new IntentFilter(BillActivity.kMessage_Changed_Quantities_Name));
 
 
@@ -201,9 +222,13 @@ public class PersonsLayout extends FrameLayout{
 
     @Override
     protected void onDetachedFromWindow() {
+
+        Context context = getContext();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
         super.onDetachedFromWindow();
 
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
+        detached = true;
+
 
 
     }

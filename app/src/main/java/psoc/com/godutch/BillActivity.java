@@ -196,5 +196,6 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
 
         billAdapter.notifyDataSetChanged();
+        totalAdapter.notifyDataSetChanged();
     }
 }
