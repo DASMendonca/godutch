@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
     public static final String INTENT_KEY_BILL_LINES = "billLinesKey";
     public static final String INTENT_KEY_BILL = "billKey";
+
+    public static final String kMessage_Changed_Quantities_Name = "lineQuantitiesChangedMessage";
+    public static final String kMessage_Changed_Nr_Lines_Name = "nrLinesChangedMessage";
+    public static final String kMessage_Changed_Nr_Persons_Name = "nrPersonsChangedMessage";
 
     private ListView lineListView;
     private ListView totalsListView;
@@ -52,10 +57,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         if (bill != null) {
 
 
-            Line[] l = bill.getLines();
-
-
-            billAdapter = new BillAdapter(this, R.layout.bill_line, l);
+            billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
                     bill.getPersons().toArray( new Person[bill.getPersons().size()]
             ));
@@ -102,6 +104,21 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+
+
+    }
+
+
+    public void addLineButtonClicked(View button){
+
+
+
+
+        bill.addEmptyLine();
+
+        billAdapter.notifyDataSetChanged();
+
+        System.out.println("Adding line");
 
 
     }

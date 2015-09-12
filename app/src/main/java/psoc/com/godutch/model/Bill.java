@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import psoc.com.godutch.GoDutch;
@@ -38,7 +39,10 @@ import psoc.com.godutch.parsing.O_ReplacerFilter;
 
 public class Bill implements Serializable{
 
-    Line[] lines = new Line[0];
+
+    ArrayList<Line> lines = new ArrayList<>();
+
+    //Line[] lines = new Line[0];
 
     ArrayList<Person> persons = new ArrayList<Person>();
 
@@ -82,12 +86,12 @@ public class Bill implements Serializable{
 
         ArrayList<Line> lines = this.linesFromString(s,this);
         //debugDefaultParams(lines);
-        this.lines = lines.toArray(new Line[lines.size()]);
+        this.lines = lines;
 
     }
 
     public Bill(Line[] lines){
-        this.lines = lines;
+        this.lines = new ArrayList<Line>(Arrays.asList(lines));
     }
 
 
@@ -174,7 +178,19 @@ public class Bill implements Serializable{
     }
 
 
-    public Line[] getLines() {
+    public ArrayList<Line> getLines() {
         return lines;
     }
+
+
+    public void addEmptyLine() {
+
+
+        Line newLine = new Line("New Product",0.00f,this);
+
+        this.lines.add(newLine);
+
+
+    }
+
 }

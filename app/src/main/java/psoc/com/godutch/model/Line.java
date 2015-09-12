@@ -79,6 +79,13 @@ public class Line implements Serializable{
 
     }
 
+    public Line(String name,float price,Bill parent){
+
+        this.parent_bill = parent;
+        this.productDescription = name;
+        this.price = price;
+    }
+
     public String getProductDescription(){
 
 
@@ -110,7 +117,22 @@ public class Line implements Serializable{
 
     public void addQuantity(Person p){
 
+
+        boolean shouldReset = true;
+
+
+        if (allPersonsHaveOneAsQuantity()){
+
+            for (Person person : quantities.keySet()) {
+
+                quantities.put(person,0);
+            }
+
+        }
+
         quantities.put(p,quantities.get(p)+1);
+
+
     }
 
     public void removeQuantity(Person p){
