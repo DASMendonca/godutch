@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,10 +61,11 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
 
         View view;
-        Holder holder = new Holder();
+        Holder holder;
 
         if (convertView == null) {
 
+            holder = new Holder();
 
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
@@ -71,6 +73,8 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
 
+
+            holder.persons = bill.persons;
             for (int i = 0; i < bill.persons.size(); i++) {
 
                 Person p = bill.persons.get(i);
@@ -84,6 +88,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
 
             }
+
 
             holder.nameLabel = (EditText) view.findViewById(R.id.productDescription);
             holder.priceLabel = (EditText) view.findViewById(R.id.rowPrice);
@@ -99,10 +104,8 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         }
 
 
-        Line line = getItem(position);
+        Line line = bill.getLines().get(position);
 
-        holder.nameLabel.setText(line.getProductDescription());
-        holder.priceLabel.setText(formatter.format(line.getPrice()));
 
         if (holder.nameWatcher != null) {
 
@@ -110,6 +113,12 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             holder.priceLabel.removeTextChangedListener(holder.priceWatcher);
 
         }
+
+
+        holder.nameLabel.setText(line.getProductDescription());
+        holder.priceLabel.setText(formatter.format(line.getPrice()));
+
+
 
         holder.nameWatcher = new TextWatcher() {
             @Override
@@ -129,7 +138,6 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
                 ListView billListView = (ListView) activity.findViewById(R.id.billListView);
             }
         };
-
         holder.priceWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -155,20 +163,59 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         holder.nameLabel.addTextChangedListener(holder.nameWatcher);
         holder.priceLabel.addTextChangedListener(holder.priceWatcher);
 
+
+        Log.e("","name " + line.getProductDescription() + " for position " + String.valueOf(position) +" "+ bill.getLines().get(position).getProductDescription());
+
+        /*
+
+        boolean shouldReplace = false;
+        if(holder.persons.size() != bill.persons.size()){
+
+            shouldReplace = true;
+
+        }
+
+        if(!shouldReplace){
+
+            for (int i = 0; i < holder.persons.size(); i++) {
+
+                Person fromHolder = holder.persons.get(i);
+                Person fromBill = bill.persons.get(i);
+
+                if (!fromHolder.equals(fromBill)){
+
+                    shouldReplace = true;
+                    break;
+
+                }
+            }
+
+
+        }
+
+        for (int i = 0; i < holder.persons.size(); i++) {
+
+            Person fromHolder = holder.persons.get(i);
+            Person
+
+        }
+
         for (PersonsLayout personsLayout : holder.personsLayout) {
+
 
 
 
 
         }
 
+        */
 
 
         return view;
     }
 
 
-    public static class Holder {
+    public class Holder {
 
 
         public TextWatcher nameWatcher;
@@ -176,6 +223,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         public TextView nameLabel;
         public TextView priceLabel;
         public ArrayList<PersonsLayout> personsLayout = new ArrayList<PersonsLayout>();
+        public ArrayList<Person> persons;
 
 
     }
