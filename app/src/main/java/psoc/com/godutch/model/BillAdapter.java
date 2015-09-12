@@ -70,24 +70,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
 
-            LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
-
-
-
-            holder.persons = bill.persons;
-            for (int i = 0; i < bill.persons.size(); i++) {
-
-                Person p = bill.persons.get(i);
-
-                PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
-
-                layout.setPerson(p);
-                layout.setLine(this.bill.getLines().get(position));
-                holder.personsLayout.add(layout);
-                container.addView(layout);
-
-
-            }
+            addButtons(position, view, holder);
 
 
             holder.nameLabel = (EditText) view.findViewById(R.id.productDescription);
@@ -167,7 +150,7 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
         Log.e("","name " + line.getProductDescription() + " for position " + String.valueOf(position) +" "+ bill.getLines().get(position).getProductDescription());
 
-        /*
+
 
         boolean shouldReplace = false;
         if(holder.persons.size() != bill.persons.size()){
@@ -197,22 +180,53 @@ public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
         for (int i = 0; i < holder.persons.size(); i++) {
 
             Person fromHolder = holder.persons.get(i);
-            Person
+            Person fromBill = bill.persons.get(i);
+
+            if (!fromHolder.equals(fromBill)){
+
+                shouldReplace = true;
+                break;
+            }
 
         }
 
-        for (PersonsLayout personsLayout : holder.personsLayout) {
+        if (shouldReplace){//remove and re-add buttons views
 
+            LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
+            container.removeAllViews();
 
-
+            addButtons(position,view,holder);
 
 
         }
 
-        */
+
+
+
 
 
         return view;
+    }
+
+    private void addButtons(int position, View row, Holder holder) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
+        LinearLayout container = (LinearLayout) row.findViewById(R.id.peopleLayout);
+
+        holder.persons = bill.persons;
+        for (int i = 0; i < bill.persons.size(); i++) {
+
+            Person p = bill.persons.get(i);
+
+            PersonsLayout layout = (PersonsLayout) layoutInflater.inflate(R.layout.persons_layout, container, false);
+
+            layout.setPerson(p);
+            layout.setLine(this.bill.getLines().get(position));
+            holder.personsLayout.add(layout);
+            container.addView(layout);
+
+
+        }
     }
 
 

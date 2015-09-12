@@ -60,6 +60,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
         @Override
         public void onReceive(Context context, Intent intent) {
             totalAdapter.notifyDataSetChanged();
+            total.setText(formatter.format(bill.getTotal()));
         }
     };
 
