@@ -91,7 +91,7 @@ public class TotalAdapter extends ArrayAdapter<Person> implements Serializable {
 
         Person person = bill.persons.get(position);
         holder.personName.setText(person.getName());
-        holder.total.setText("€ 10.0");
+        holder.total.setText(Float.toString(bill.totalForPerson(bill.persons.get(position))));
 
         return row;
     }

@@ -193,4 +193,19 @@ public class Bill implements Serializable{
 
     }
 
+
+    public float totalForPerson(Person p){
+
+        float totalSoFar = 0.0f;
+        for (Line line : lines) {
+
+
+            totalSoFar += line.priceForPerson(p);
+
+        }
+
+        return totalSoFar;
+
+    }
+
 }
