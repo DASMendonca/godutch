@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import psoc.com.godutch.BillActivity;
@@ -27,10 +28,11 @@ import psoc.com.godutch.R;
 /**
  * Created by asmen on 09/09/2015.
  */
-public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
+public class BillAdapter extends ArrayAdapter<Line> implements Serializable {
 
     Activity activity;
     int mLayoutResourceId;
+    NumberFormat formatter = NumberFormat.getNumberInstance();
 
 
     Bill bill;
@@ -39,13 +41,12 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
     public BillAdapter(Activity a, int resource, Bill bill) {
 
         super(a, resource, bill.getLines());
+
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
         this.mLayoutResourceId = resource;
         this.activity = a;
         this.bill = bill;
-
-
-
-
     }
 
 
@@ -64,14 +65,13 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         if (convertView == null) {
 
 
-
             LayoutInflater layoutInflater = LayoutInflater.from(activity.getApplicationContext());
             view = layoutInflater.inflate(mLayoutResourceId, parent, false);
 
             LinearLayout container = (LinearLayout) view.findViewById(R.id.peopleLayout);
 
 
-            for (int i = 0; i < bill.persons.size() ; i++) {
+            for (int i = 0; i < bill.persons.size(); i++) {
 
                 Person p = bill.persons.get(i);
 
@@ -89,16 +89,10 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
             holder.priceLabel = (EditText) view.findViewById(R.id.rowPrice);
 
 
-
-
-
             view.setTag(holder);
 
 
-
-
-
-        } else{
+        } else {
 
             view = convertView;
             holder = (Holder) view.getTag();
@@ -108,9 +102,9 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         Line line = getItem(position);
 
         holder.nameLabel.setText(line.getProductDescription());
-        holder.priceLabel.setText(String.valueOf(line.getPrice()));
+        holder.priceLabel.setText(formatter.format(line.getPrice()));
 
-        if (holder.nameWatcher != null){
+        if (holder.nameWatcher != null) {
 
             holder.nameLabel.removeTextChangedListener(holder.nameWatcher);
             holder.priceLabel.removeTextChangedListener(holder.priceWatcher);
@@ -171,7 +165,7 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
     }
 
 
-    public static class Holder{
+    public static class Holder {
 
 
         public TextWatcher nameWatcher;
@@ -179,8 +173,6 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
         public TextView nameLabel;
         public TextView priceLabel;
         public ArrayList<PersonsLayout> personsLayout = new ArrayList<PersonsLayout>();
-
-
 
 
     }

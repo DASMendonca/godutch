@@ -27,7 +27,7 @@ public class Line implements Serializable{
 
     int quantity;
 
-    public Line(String input,Bill parent)a{
+    public Line(String input,Bill parent){
 
 
 
@@ -145,25 +145,7 @@ public class Line implements Serializable{
     public void removeQuantity(Person p){
 
 
-        if (quantities.get(p) == 0){
-
-            return;
-
-        }
-
         quantities.put(p,quantities.get(p)-1);
-
-        if (allPersonsHaveZeroAsQuantity()){
-
-            for (Person person : quantities.keySet()) {
-
-                quantities.put(person,1);
-            }
-
-        }
-
-
-
 
 
     }
@@ -207,19 +189,6 @@ public class Line implements Serializable{
 
         return true;
 
-    }
-
-    public boolean allPersonsHaveZeroAsQuantity(){
-
-        for (Person person : this.quantities.keySet()) {
-
-            if (this.quantities.get(person) != 0){
-
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public void personAdded(Person p) {
