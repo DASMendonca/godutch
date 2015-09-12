@@ -20,25 +20,29 @@
         android:background="#fffef3" />
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
-        android:weightSum="10"
         android:orientation="vertical">
+
+
+
+
+
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="2"
+            android:id="@+id/totals"
             >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="Total"
                 android:textSize="30dp" />
@@ -48,31 +52,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:text="0.00€"
                 android:textSize="30dp" />
 
         </RelativeLayout>
 
+
         <ListView
             android:id="@+id/peopleTotals"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_height="fill_parent"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:background="#fffef3" />
+            android:background="#fffef3"
+            android:layout_below="@+id/totals"
+            android:layout_above="@+id/addButton"/>
+
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="2"
+            android:scaleType="fitXY"
+            android:id="@+id/addButton"
+            android:alpha="0.5"
+            android:layout_height="35dp"
+            android:layout_width="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:background="@drawable/button_circle_design_white"
             android:onClick="addLineButtonClicked"
-            android:src="@drawable/ic_add_circle_outline_black_48dp" />
+            android:src="@drawable/ic_add_circle_outline_black_48dp"/>
 
-    </LinearLayout>
+
+
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>
