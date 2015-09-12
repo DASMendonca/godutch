@@ -38,22 +38,26 @@
             >
 
             <View
+                android:alpha="0.5"
+                android:background="#616161"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="1dp"
                 android:id="@+id/separator1"
                 android:backgroundTint="@color/go_dutch_black"
                  />
 
             <View
+                android:alpha="0.5"
+                android:layout_marginTop="2dp"
+                android:background="#616161"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="1dp"
                 android:id="@+id/separator2"
-                android:backgroundTint="@color/go_dutch_black"
                 android:layout_below="@+id/separator1"
                 />
 
             <TextView
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5dp"
                 android:layout_below="@+id/separator2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +69,7 @@
                 android:textSize="30dp" />
 
             <TextView
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/billTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
