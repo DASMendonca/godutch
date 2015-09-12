@@ -1,6 +1,5 @@
 package psoc.com.godutch.model;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,15 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.util.List;
+
 
 import psoc.com.godutch.BillActivity;
 import psoc.com.godutch.R;

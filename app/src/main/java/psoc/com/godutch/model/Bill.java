@@ -1,34 +1,12 @@
 package psoc.com.godutch.model;
 
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.RectF;
-import android.graphics.pdf.PdfRenderer;
-import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ListView;
-
 import com.googlecode.tesseract.android.TessBaseAPI;
-
-
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import psoc.com.godutch.GoDutch;
 import psoc.com.godutch.Home;
-import psoc.com.godutch.R;
 import psoc.com.godutch.parsing.B_ReplacerFilter;
 import psoc.com.godutch.parsing.CommaReplacer;
 import psoc.com.godutch.parsing.L_ReplacerFilter;
