@@ -122,23 +122,36 @@ public class Line implements Serializable{
         this.productDescription = productDescription;
     }
 
-    public void addQuantity(Person p){
+    public void addIfNotAlone(Person person){
 
+        Boolean isAlone = true;
+        Boolean allHaveOne = true;
 
-        boolean shouldReset = true;
-
-
-        if (allPersonsHaveOneAsQuantity()){
-
-            for (Person person : quantities.keySet()) {
-
-                quantities.put(person,0);
+        for (Person p : this.quantities.keySet()) {
+            if(!p.getName().equalsIgnoreCase(person.getName()) &&
+                    this.quantities.get(p) > 0) {
+                isAlone = false;
             }
 
+            if (this.quantities.get(p) != 1){
+                allHaveOne = false;
+            }
         }
 
-        quantities.put(p,quantities.get(p)+1);
+        if(isAlone)
+            return;
 
+        if(allHaveOne)
+            for (Person p : quantities.keySet())
+                quantities.put(p,0);
+
+
+        quantities.put(person,quantities.get(person)+1);
+
+    }
+
+    public void addQuantity(Person p){
+        addIfNotAlone(p);
 
     }
 
