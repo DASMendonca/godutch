@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import psoc.com.godutch.R;
@@ -39,11 +40,15 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
     private TotalAdapter totalAdapter;
 
     Bill bill = null;
+    NumberFormat formatter = NumberFormat.getNumberInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
 
         setContentView(R.layout.activity_bill);
 
@@ -60,7 +65,7 @@ public class BillActivity extends Activity implements PersonFragment.OnFragmentI
 
         if (bill != null) {
 
-            total.setText(String.valueOf(bill.getTotal()));
+            total.setText(formatter.format( bill.getTotal()));
 
             billAdapter = new BillAdapter(this, R.layout.bill_line, bill);
             totalAdapter = new TotalAdapter(this,R.layout.person_total,
