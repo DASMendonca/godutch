@@ -158,6 +158,15 @@ public class BillAdapter extends ArrayAdapter<Line>  implements Serializable{
 
         //Edit product description field listener
 
+
+        for (PersonsLayout personsLayout : holder.personsLayout) {
+
+
+
+        }
+
+
+
         return view;
     }
 
