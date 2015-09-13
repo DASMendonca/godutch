@@ -17,18 +17,18 @@ public class ReceiptInputDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 
-        CharSequence items[] = {"Use Gallery", "Use Camera", "Use Test" };
+        CharSequence items[] = {"Camera", "Gallery", "PDF" };
 
         builder.setTitle(R.string.bill_input);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if (which == 0) {
+                if (which == 1) {
 
                     ((Home) getActivity()).selectFromGallery();
 
-                } else if (which == 1) {
+                } else if (which == 0) {
 
                     ((Home) getActivity()).selectFromCamera();
 
