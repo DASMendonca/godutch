@@ -162,8 +162,11 @@ public class Home extends Activity {
 
     public void selectFromCamera() {
         //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_image);
-
+        File file = new File(_path);
+        Uri outputFileUri = Uri.fromFile(file);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+
         startActivityForResult(intent, REQUEST_CAMERA_CODE);
 
     }
@@ -233,6 +236,11 @@ public class Home extends Activity {
         //FROM HERE
         Bundle extras = data.getExtras();
         Bitmap bitmap = (Bitmap) extras.get("data");
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+
+        bitmap = BitmapFactory.decodeFile(_path, options);
 
         try {
             ExifInterface exif = new ExifInterface(_path);
