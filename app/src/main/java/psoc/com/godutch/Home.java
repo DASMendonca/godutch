@@ -152,7 +152,6 @@ public class Home extends Activity {
     }
 
 
-
     public void selectFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -234,8 +233,10 @@ public class Home extends Activity {
 
     protected void onCameraPhotoTaken(Intent data) {
         //FROM HERE
-        Bundle extras = data.getExtras();
-        Bitmap bitmap = (Bitmap) extras.get("data");
+       // Bundle extras = data.getExtras();
+        //Bitmap bitmap = (Bitmap) extras.get("data");
+
+        Bitmap bitmap;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 4;
